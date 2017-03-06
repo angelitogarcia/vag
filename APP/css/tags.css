@@ -1,0 +1,22 @@
+ul#tags{
+	cursor:text;
+	border:1px solid #999;
+	overflow: hidden;
+	padding: 5px;
+}
+ul#tags li{
+	float: left;
+	padding: 3px 6px;
+	background-color: red;
+	list-style: none;
+	margin-right: 10px; 
+}
+ul#tags li.no-definido
+{
+	background: none;
+}
+ul#tags li.no-definido input
+{
+	border: none;
+
+}

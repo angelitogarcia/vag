@@ -1,0 +1,80 @@
+<html>
+<head>
+<title>Prueba Fotos</title>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="js/library/jquery.min.js"></script>
+<script type="text/javascript" src="js/library/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/library/jquery.caret.min.js"></script>
+<script type="text/javascript" src="js/library/jquery.tag-editor.min.js"></script>
+<script type="text/javascript" src="js/library/cropper.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/cropper.css">
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="css/jquery.tag-editor.css">
+<link rel="stylesheet" type="text/css" href="css/tags.css">
+
+<script src="js/model/Foto.js"></script>
+<script src="js/model/Perfil.js"></script>
+<script src="js/model/Tag.js"></script>
+
+<script src="js/vista/vistaFotoGaleria.js"></script>
+<script src="js/vista/vistaPerfiles.js"></script>
+<script src="js/controlador/controladorFotoGaleria.js"></script>
+<script src="js/controlador/controladorPerfiles.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var datos;
+	var controladorFotoGaleria=new ControladorFotoGaleria();
+	var controladorPerfiles=new ControladorPerfiles();
+	$("button#traerFotos").click(function()
+	{
+		var idPerfil=19;
+		
+		controladorFotoGaleria.fotoGaleria(19);
+	})
+	$(".traerPerfiles").click(function()
+	{
+		controladorPerfiles.perfiles();
+	})
+})
+
+
+</script>
+<style type="text/css">
+	#fotos{
+		margin-bottom: 60px;
+		border: 1px solid #777;
+		padding: 30px;
+	}
+	.foto{
+		height:200px;
+		padding: 50px;
+	}
+	.foto img{
+		height: 100%;
+	}
+	.foto a{
+		display: block;
+	}
+	#perfiles{
+		padding: 30px;
+		border: 1px solid #777;
+	}
+	#cropContenedor{
+		width: 500px;
+		margin: auto;
+	}
+</style>
+</head>
+<body>
+	<button id="traerFotos">Traer fotos</button>
+	<div>
+		<a class="click" href="#">click</a>
+		<a href="#" class="traerPerfiles">Perfiles</a>
+	</div>
+
+	<div id="fotos"></div>
+	<div id="perfiles"></div>
+	<div id="cropContenedor"><a href="#" class="cortar">Cortar</a></div>
+	<div class="resultadoCrop"></div>
+</body>
+</html>
