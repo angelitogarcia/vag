@@ -5,7 +5,7 @@ class config{
  }
  
  public static function getBBDDName(){
-  return  'Vag'; 
+  return  'vag'; 
  }
  
  public static function getBBDDUser(){
