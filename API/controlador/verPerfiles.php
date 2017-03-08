@@ -21,7 +21,7 @@ else {
         $perfil->idPerfil=$row['idPerfil'];
         $perfil->nombrePerfil=$row['nombrePerfil'];
         $perfil->urlFb=$row['urlFb'];
-        $perfil->imgPerfil=$row['imgPerfil'];
+        $perfil->imgPerfil=$row['ImgPerfil'];
         $perfil->idFb=$row['idFb'];
         $perfil->insta=$row['insta'];
         $perfil->ranking=$row['ranking'];

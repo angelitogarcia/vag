@@ -7,47 +7,53 @@ header('Content-Type: text/html; charset=utf-8');
 // ---------------------------------------------
 
 $tag=new Tag();
-$json = file_get_contents('php://input');
-$decode = json_decode($json, true);
-$numItems = count($decode);
-$idPerfil=$decode[1]["idPerfil"];
-$sql="INSERT INTO PerfilTag(idPerfil,idTag) VALUES"
-$i=0;
-foreach ($decode as $item) {
-	//los tags que no tengan id son nuevos y se agregaran
-	if($item['idTag']===null)
-	{
-		//si el tag no tiene id es nuevo
-		$nombre=$item['nombre'];
-		$sqlNewTag="INSERT INTO Tag(nombre) VALUES($nombre)";
-		$resultado=$db->executeQuery($sqlNewTag);
-		if($resultado)
-		{
-			$row=mysql_fetch_array($resultado);
-			$idTag=$row['idTag'];
-			if(++$i === $numItems) 
-	    	{
-	    		$sql .= "('$idPerfil','idTag');";
+$idPerfil=$_GET['idPerfil'];
+$nombreTag=$_GET['nombreTag'];
+$idTag=0;
 
-	    	}else{
-	    		$sql .= "('$idPerfil','idTag'),";
-	    	}
-		}
-		else{
+// ------- verificar si ya existe el tag --------- //
+
+$sql = "SELECT * from Tag WHERE nombre='$nombreTag' LIMIT 1";
+$db = new dbmanager();
+$resultado=$db->executeQuery($sql);
+if($resultado){
+	if(mysql_fetch_array($resultado) === false)
+	{
+		//no existe, agregar tag a base de datos
+		$sql="INSERT INTO Tag(nombre) VALUES('$nombreTag')";
+		$db = new dbmanager();
+		$resultado=$db->executeQuery($sql);
+		if(!$resultado){
 			die('<br/>MySQL Error: ' . mysql_error());
+		}else{
+			echo "Se agrego correctamente el Tag";
 		}
-	}else
-	{
-		$idTag=$item['idTag'];
-		if(++$i === $numItems) 
-    	{
-    		$sql .= "('$idPerfil','idTag');";
-
-    	}else{
-    		$sql .= "('$idPerfil','idTag'),";
-    	}	
 	}
+	// conseguir id del tag en base al nombre
+	$sql="SELECT idTag from Tag WHERE nombre='$nombreTag' LIMIT 1";
+	$resultado=$db->executeQuery($sql);
+	if($resultado){
+		$row = mysql_fetch_array($resultado);
+		$idTag=$row['idTag'];
+	}else{
+		die('<br/>MySQL Error: ' . mysql_error());
+	}
+
+	// agregar tag a perfil
+
+	$sql="INSERT INTO PerfilTag(idPerfil,idTag) VALUES('$idPerfil','$idTag')";
+	$resultado=$db->executeQuery($sql);
+	if($resultado){
+		echo "Tag agregado a perfil correctamente";
+	}
+	else{
+		die('<br/>MySQL Error: ' . mysql_error());
+	}
+
+
+}else{
+	die('<br/>MySQL Error: ' . mysql_error());
 }
-$db->executeQuery($sql);
+
 
 ?>
