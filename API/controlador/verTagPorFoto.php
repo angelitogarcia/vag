@@ -4,13 +4,13 @@ include_once('../modelo/Tag.php');
 
 header('Content-Type: text/html; charset=utf-8');
 
-$idPerfil=$_GET['idPerfil'];
+$idPerfil=$_GET['idFoto'];
 $tags=array();
 $db = new dbmanager();
 $sql = "SELECT * FROM Tag T
-        JOIN PerfilTag PT ON T.idTag=PT.idTag
-        JOIN Perfil P ON P.idPerfil=PT.idPerfil
-        WHERE P.idPerfil='$idPerfil'";
+        JOIN FotoTag FT ON T.idTag=FT.idTagF
+        JOIN Foto F ON F.idFoto=FT.idFotoF
+        WHERE F.idFoto='$idFoto'";
 $resultado=$db->executeQuery($sql);
 if(!$resultado){
     die('<br/>MySQL Error: ' . mysql_error());

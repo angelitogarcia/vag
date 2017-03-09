@@ -7,7 +7,7 @@ header('Content-Type: text/html; charset=utf-8');
 // ---------------------------------------------
 
 $tag=new Tag();
-$idPerfil=$_GET['idPerfil'];
+$idFoto=$_GET['idFoto'];
 $nombreTag=$_GET['nombreTag'];
 $idTag=0;
 
@@ -39,17 +39,16 @@ if($resultado){
 		die('<br/>MySQL Error: ' . mysql_error());
 	}
 
-	// agregar tag a perfil
+	// agregar tag a foto
 
-	$sql="INSERT INTO PerfilTag(idPerfil,idTag) VALUES('$idPerfil','$idTag')";
+	$sql="INSERT INTO FotoTag(idFotoF,idTagF) VALUES('$idFoto','$idTag')";
 	$resultado=$db->executeQuery($sql);
 	if($resultado){
-		echo "Tag agregado a perfil correctamente";
+		echo "Tag $nombreTag agregado a la Foto correctamente";
 	}
 	else{
 		die('<br/>MySQL Error: ' . mysql_error());
 	}
-
 
 }else{
 	die('<br/>MySQL Error: ' . mysql_error());
