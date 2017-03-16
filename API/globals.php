@@ -15,5 +15,8 @@ class config{
  public static function getBBDDPwd(){
   return ''; 
  }
+ public static function getUrlImgs(){
+ 	return '../../../archivos/imagenes';
+ }
 }
 ?>

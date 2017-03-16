@@ -23,14 +23,14 @@ if($resultado){
 	//crear carpeta con nombre
 	$directorio=$perfil->nombrePerfil;
 	//$dirmake = mkdir("$directorio", 777);
-	if(!mkdir("../imagenes/" . $directorio, 0777)) {
+	if(!mkdir(config::getUrlImgs(). $directorio, 0777)) {
     	die('Fallo al crear las carpetas...');
 
 	}
 	else
 	{
 		
-		mkdir("../imagenes/" . $directorio . "/thumbs", 0777);
+		mkdir(config::getUrlImgs(). $directorio . "/thumbs", 0777);
 		echo "Se creo  el perfil correctamente";
 	}
 }

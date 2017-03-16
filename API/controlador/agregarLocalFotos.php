@@ -18,8 +18,8 @@ $resultadoPerfil=$db->executeQuery($sqlPerfil);
 $rowPerfil = mysql_fetch_array($resultadoPerfil);
 $nombrePerfil=$rowPerfil['nombrePerfil'];
 
-$upload_dir = 'imagenes/' . $nombrePerfil;
-$thumb_dir='../imagenes/' . $nombrePerfil . '/thumbs/';
+$upload_dir = config::getUrlImgs() . $nombrePerfil;
+$thumb_dir=config::getUrlImgs(). $nombrePerfil . '/thumbs/';
 
 $cnt=0;
 foreach($_FILES as $eachFile)
@@ -29,7 +29,7 @@ foreach($_FILES as $eachFile)
 }
 
 
-$sql="INSERT INTO Foto(urlFoto,ancho,alto,proporcion,idFbFoto,extension,idPerfil) VALUES";
+$sql="INSERT INTO Foto(urlFoto,ancho,alto,proporcion,idFbFoto,extension) VALUES";
 
 
 // --------- one file ----------
@@ -56,7 +56,7 @@ foreach($_FILES['file']['name'] as $index=>$name)
     $file_ext=$filename_err[$filename_err_count-1];
     $filename = $name;
 
-    $upload_image="../" . $upload_dir . "/" . $filename;
+    $upload_image=$upload_dir . "/" . $filename;
     if(!file_exists($upload_image))
     {
     	if(move_uploaded_file($_FILES["file"]["tmp_name"][$index],$upload_image))
@@ -106,11 +106,11 @@ foreach($_FILES['file']['name'] as $index=>$name)
 	                    imagejpeg($thumb_create,$thumb_dir.$filename,100);
 
 	           	}
-	           	$sql.="('$filename','$width','$height','$proporcion','','$file_ext','$idPerfil')";
+	           	$sql.="('$filename','$width','$height','$proporcion','','$file_ext')";
             }
             else
             {
-            	$sql.="('$filename',0,0,0,'','$file_ext','$idPerfil')";
+            	$sql.="('$filename',0,0,0,'','$file_ext')";
             }
             
             echo $filename . " - ";
@@ -122,10 +122,21 @@ foreach($_FILES['file']['name'] as $index=>$name)
 
 
         }
+        $sql.=";";
+		echo $sql;
+		$db->executeQuery($sql);
+		$sql="SELECT MAX(idFoto) as idFoto FROM Foto;";
+		$resultado=$db->executeQuery($sql);
+		$row = mysql_fetch_array($resultado);
+		$lastId=$row["idFoto"];
+		$sql="INSERT INTO PerfilFoto(idPerfil,idFoto) values('$idPerfil','$lastId')";
+		$db->executeQuery($sql);
+		echo $sql;
+    }// if file exist
+    else{
+    	echo "la foto ".$upload_image." ya existe. <br>"
     }
     
-}
-$sql.=";";
-echo $sql;
-$db->executeQuery($sql);
+}// for each
+
 ?>
