@@ -33,7 +33,7 @@ Dropzone.autoDiscover = false;
 			$("#submit-all").click(function (e) {
 		       e.preventDefault();
 		       e.stopPropagation();
-		       myDropzone.options.url="../API/controlador/agregarLocalFotos.php?idPerfil=4";
+		       myDropzone.options.url="../API/controlador/agregarLocalFotos.php?idPerfil=12";
 		       myDropzone.processQueue();
 		    });
 		    $('#auto').change(function(){
@@ -55,7 +55,7 @@ Dropzone.autoDiscover = false;
 	</script>
 </head>
 <body>
-    <form action="../API/controlador/agregarLocalFotos.php?idPerfil=4" id="fotos" class="dropzone" enctype="multipart/form-data">
+    <form action="../API/controlador/agregarLocalFotos.php?idPerfil=12" id="fotos" class="dropzone" enctype="multipart/form-data">
     </form>
     <button id="submit-all">Subir</button>
     <input type="checkbox" name="auto" value="auto" id="auto"> Subida Instantanea

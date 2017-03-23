@@ -18,7 +18,7 @@ VistaFotoGaleria.prototype=
 		var html="";
 		for(var i=0;i<fotos.length;i++)
 		{
-			var url="../API/imagenes/"+fotos[i].nombrePerfil+"/"+fotos[i].urlFoto;
+			var url="../../../archivos/imagenes/"+fotos[i].nombrePerfil+"/"+fotos[i].urlFoto;
 			var idPerfil=fotos[i].idPerfil;
 			var idFoto=fotos[i].idFoto;
 			html+="<div class='foto' idFoto='"+idFoto+"' idPerfil='"+idPerfil+"'>";

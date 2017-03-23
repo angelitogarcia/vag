@@ -110,7 +110,7 @@ foreach($_FILES['file']['name'] as $index=>$name)
             }
             else
             {
-            	$sql.="('$filename',0,0,0,'','$file_ext')";
+            	$sql.="('$filename',0,0,0,'','$file_ext')"; 
             }
             
             echo $filename . " - ";
@@ -134,7 +134,7 @@ foreach($_FILES['file']['name'] as $index=>$name)
 		echo $sql;
     }// if file exist
     else{
-    	echo "la foto ".$upload_image." ya existe. <br>"
+    	echo "la foto ".$upload_image." ya existe. <br>";
     }
     
 }// for each

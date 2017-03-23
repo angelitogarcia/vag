@@ -10,5 +10,6 @@ class Foto
     var $ranking;
     var $idPerfil;
     var $nombrePerfil;
+    var $tags;
 }
 ?>

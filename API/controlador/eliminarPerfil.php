@@ -20,8 +20,8 @@ else {
 }
 
 $cont=0;
-chmod("../imagenes/".$nombrePerfil,0777);
-if(Delete("../imagenes/".$nombrePerfil))
+chmod(config::getUrlImgs().$nombrePerfil,0777);
+if(Delete(config::getUrlImgs().$nombrePerfil))
 {
     $cont++;
     echo $cont. " / ";

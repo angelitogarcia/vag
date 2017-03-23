@@ -16,7 +16,7 @@ class config{
   return ''; 
  }
  public static function getUrlImgs(){
- 	return '../../../archivos/imagenes';
+ 	return '../../../archivos/imagenes/';
  }
 }
 ?>

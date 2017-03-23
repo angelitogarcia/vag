@@ -1,0 +1,35 @@
+<html>
+	<head>
+		<title>Prueba Angular</title>
+		<script type="text/javascript" src="https://code.angularjs.org/latest/angular.min.js"></script>
+		<script type="text/javascript" src="app.js"></script>
+		<style type="text/css">
+			#Fotos ul li img{
+				width: 100px;
+				height: auto;
+			}
+		</style>
+	</head>
+	<body ng-app="MyApp">
+	  <div ng-controller="FotosCtrl" id="Fotos">
+	    <ul >
+	      <li ng-repeat="foto in fotos"><img ng-src="{{directorioImgs+foto.nombrePerfil+'/thumbs/'+foto.urlFoto}}"/></li>
+	    </ul>
+	  </div>
+	  <hr>
+	  <div ng-controller="PerfilesCtrl">
+	  		<form ng-submit="agregarPerfil()">
+	  			<input type="text" name="nombre" placeholder="nombre" ng-model="formdata.nombrePerfil">
+	  			<input type="text" name="urlFb" placeholder="Url de facebook" ng-model="formdata.urlFb">
+	  			{{formdata}} <button>Agregar Perfil</button>
+	  		</form>
+	  		<ul>
+	  			<li ng-repeat="perfil in perfiles">
+	  				<a id="{{perfil.idPerfil}}" href="" ng-click="seleccionarPerfil(perfil.idPerfil)">{{perfil.nombrePerfil}}</a> 
+	  				<a href="#">Modificar </a>
+	  				<a href="#" ng-click="eliminarPerfil(perfil.idPerfil)"> Eliminar</a>
+	  			</li>
+	  		</ul>
+	  </div>
+	</body>
+</html>	

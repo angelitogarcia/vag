@@ -1,14 +1,18 @@
 <?php
 include_once('../dbmanager.php');
 include_once('../modelo/Foto.php');
+include_once('../modelo/Tag.php');
 
 header('Content-Type: text/html; charset=utf-8');
 
 $limit=$_GET['limite'];
 $fotos=array();
 $db = new dbmanager();
+$tag=new Tag();
 
-$sql = "SELECT * from Foto LIMIT ".$limit;
+$sql = "SELECT DISTINCT * FROM Foto F
+JOIN PerfilFoto PF ON PF.idFoto=F.idFoto
+JOIN Perfil P ON P.idPerfil=PF.idPerfil LIMIT ".$limit;
 
 $resultado=$db->executeQuery($sql);
 
@@ -26,6 +30,9 @@ else {
     $foto->proporcion=$row['proporcion'];
     $foto->idFbFoto=$row['idFbFoto'];
     $foto->ranking=$row['ranking'];
+    $foto->nombrePerfil=$row['nombrePerfil'];
+    $foto->tags=$tag->tagsPorFoto($foto->idFoto);
+
     array_push($fotos, $foto);
    }
 
