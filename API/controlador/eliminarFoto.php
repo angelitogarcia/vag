@@ -11,9 +11,10 @@ $db = new dbmanager();
 
 $sql = "SELECT F.idFoto,F.urlFoto,P.nombrePerfil from Foto F
         JOIN Perfil P ON P.idPerfil=F.idPerfil
-        WHERE idFoto='$idFoto'";
+        WHERE F.idFoto='$idFoto'";
 $resultado=$db->executeQuery($sql);
 if(!$resultado) {
+    echo "No se pudo buscar nombre y perfil de la foto";
     die("<br/>MySQL Errors: " . mysql_error());
 }
 else {
@@ -28,10 +29,11 @@ $resultado=$db->executeQuery($sql);
 
 if(!$resultado) {
     die("<br/>MySQL Errors: " . mysql_error());
+    echo "no se pudo eliminar la imagen de la base de datos";
 }
 else {
-    unlink("../imagenes/".$nombrePerfil."/".$urlFoto);
-    unlink("../imagenes/".$nombrePerfil."/thumbs/".$urlFoto);
+    unlink(config::getUrlImgs().$nombrePerfil."/".$urlFoto);
+    unlink(config::getUrlImgs().$nombrePerfil."/thumbs/".$urlFoto);
     echo '[{"res":"200"}]';
 }
 

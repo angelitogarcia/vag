@@ -12,9 +12,8 @@ $tag=new Tag();
 
 //$sql = "SELECT * from Foto JOIN Perfil ON Perfil.idPerfil=Foto.idPerfil WHERE Foto.idPerfil=".$idPerfil;
 $sql = "SELECT DISTINCT * FROM Foto F
-JOIN PerfilFoto PF ON PF.idFoto=F.idFoto
-JOIN Perfil P ON P.idPerfil=PF.idPerfil
-WHERE PF.idPerfil=".$idPerfil;
+JOIN Perfil P ON P.idPerfil=F.idPerfil
+WHERE F.idPerfil=".$idPerfil;
 
 $resultado=$db->executeQuery($sql);
 

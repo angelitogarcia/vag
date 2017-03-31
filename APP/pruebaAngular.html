@@ -1,35 +1,62 @@
 <html>
 	<head>
 		<title>Prueba Angular</title>
+		<script type="text/javascript" src="js/library/jquery-3.1.0.min.js"></script>
+		<script src="js/library/dropzone.js"></script>
 		<script type="text/javascript" src="https://code.angularjs.org/latest/angular.min.js"></script>
+		<script type="text/javascript" src="js/library/cropper.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/cropper.css">
+		<script type="text/javascript" src="js/dropzoneConfig.js"></script>
 		<script type="text/javascript" src="app.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/estilos.css">
+			<link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
 		<style type="text/css">
 			#Fotos ul li img{
 				width: 100px;
 				height: auto;
 			}
+			#cropContenedor{
+				width: 500px;
+				height: 500px;
+				margin: auto;
+			}
+			#Perfiles ul li img{
+				width: 100px;
+			}
 		</style>
 	</head>
 	<body ng-app="MyApp">
-	  <div ng-controller="FotosCtrl" id="Fotos">
-	    <ul >
-	      <li ng-repeat="foto in fotos"><img ng-src="{{directorioImgs+foto.nombrePerfil+'/thumbs/'+foto.urlFoto}}"/></li>
-	    </ul>
-	  </div>
-	  <hr>
-	  <div ng-controller="PerfilesCtrl">
+	    <div ng-controller="FotosCtrl" id="Fotos">
+		    <ul >
+		      <li ng-repeat="foto in fotos"><img ng-src="{{directorioImgs+foto.nombrePerfil+'/thumbs/'+foto.urlFoto}}"/>
+		      	<a href="" ng-click="eliminarFoto(foto.idFoto)">X eliminar</a>
+		      	<a href="" ng-click="cambiarFotoPerfil(directorioImgs+foto.nombrePerfil+'/'+foto.urlFoto,foto.idPerfil,foto.nombrePerfil)">Cambiar Foto de Perfil</a>
+		      </li>
+		    </ul>
+		    <div id="cropContenedor"><a ng-click="cortarImg()" href="#" class="cortar">Cortar</a></div>
+		    <div id="dropFotos">
+		    	<div   id="fotosContenedor" class="dropzone" >
+			    </div>
+			    <button id="submit-all">Subir</button>
+			    <input type="checkbox" name="auto" value="auto" id="auto"> Subida Instantanea
+			    <button id="quitar">Limpiar area</button>
+		    </div>
+		</div>
+	    <hr>
+	    <div ng-controller="PerfilesCtrl" id="Perfiles">
 	  		<form ng-submit="agregarPerfil()">
 	  			<input type="text" name="nombre" placeholder="nombre" ng-model="formdata.nombrePerfil">
 	  			<input type="text" name="urlFb" placeholder="Url de facebook" ng-model="formdata.urlFb">
 	  			{{formdata}} <button>Agregar Perfil</button>
 	  		</form>
 	  		<ul>
-	  			<li ng-repeat="perfil in perfiles">
-	  				<a id="{{perfil.idPerfil}}" href="" ng-click="seleccionarPerfil(perfil.idPerfil)">{{perfil.nombrePerfil}}</a> 
+	  			<li ng-repeat="perfil in perfiles" ng-click="seleccionarPerfil(perfil.idPerfil)">
+	  				<img ng-src="{{directorioImgs+perfil.imgPerfil}}">
+	  				<a id="{{perfil.idPerfil}}" href="" >{{perfil.nombrePerfil}}</a> 
 	  				<a href="#">Modificar </a>
 	  				<a href="#" ng-click="eliminarPerfil(perfil.idPerfil)"> Eliminar</a>
 	  			</li>
 	  		</ul>
-	  </div>
+	    </div>
 	</body>
 </html>	

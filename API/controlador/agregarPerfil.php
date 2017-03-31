@@ -13,8 +13,8 @@ $perfil->idFb= (isset($_GET['idFb'])) ? $_GET['idFb'] : '';
 //$perfil->insta=$_GET['insta'];
 $perfil->insta= (isset($_GET['insta'])) ? $_GET['insta'] : '';
 
-$sql="INSERT INTO Perfil(nombrePerfil,urlFb,idFb,insta)
-VALUES('$perfil->nombrePerfil','$perfil->urlFb','$perfil->idFb','$perfil->insta')";
+$sql="INSERT INTO Perfil(nombrePerfil,urlFb,idFb,insta,imgPerfil)
+VALUES('$perfil->nombrePerfil','$perfil->urlFb','$perfil->idFb','$perfil->insta','profileImg.jpg')";
 $db = new dbmanager();
 $resultado=$db->executeQuery($sql);
 if($resultado){

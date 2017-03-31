@@ -29,7 +29,7 @@ foreach($_FILES as $eachFile)
 }
 
 
-$sql="INSERT INTO Foto(urlFoto,ancho,alto,proporcion,idFbFoto,extension) VALUES";
+
 
 
 // --------- one file ----------
@@ -51,6 +51,7 @@ $indice=0;
 
 foreach($_FILES['file']['name'] as $index=>$name)
 {
+
     $filename_err=explode(".",$_FILES['file']['name'][$index]);
     $filename_err_count = count($filename_err);
     $file_ext=$filename_err[$filename_err_count-1];
@@ -61,9 +62,10 @@ foreach($_FILES['file']['name'] as $index=>$name)
     {
     	if(move_uploaded_file($_FILES["file"]["tmp_name"][$index],$upload_image))
     	{
+    		$sql="INSERT INTO Foto(urlFoto,ancho,alto,proporcion,idFbFoto,extension,idPerfil) VALUES";
     		$indice++;
            	list($width,$height)=getimagesize($upload_image);
-           	if($indice>1){$sql.=",";};
+           	//if($indice>1){$sql.=",";};
            	if($file_ext=='jpg'||$file_ext=='jpeg'||$file_ext=='png'||$file_ext=='gif')
            	{
 
@@ -106,32 +108,29 @@ foreach($_FILES['file']['name'] as $index=>$name)
 	                    imagejpeg($thumb_create,$thumb_dir.$filename,100);
 
 	           	}
-	           	$sql.="('$filename','$width','$height','$proporcion','','$file_ext')";
+	           	$sql.="('$filename','$width','$height','$proporcion','','$file_ext','$idPerfil')";
             }
             else
             {
-            	$sql.="('$filename',0,0,0,'','$file_ext')"; 
+            	$sql.="('$filename',0,0,0,'','$file_ext','$idPerfil')"; 
             }
             
-            echo $filename . " - ";
-           	echo $width . " X " . $height;
-           	echo "Extension:";
-           	echo $file_ext;
 
            	// guardar en base de datos
-
+            $sql.=";";
+			echo $sql;
+			$resultado=$db->executeQuery($sql);
+			if($resultado)
+			{
+				echo "Se agrego correctamente la foto".$upload_image;
+			}
+			else{
+				die('<br/>MySQL Error: ' . mysql_error());
+			}
+			
 
         }
-        $sql.=";";
-		echo $sql;
-		$db->executeQuery($sql);
-		$sql="SELECT MAX(idFoto) as idFoto FROM Foto;";
-		$resultado=$db->executeQuery($sql);
-		$row = mysql_fetch_array($resultado);
-		$lastId=$row["idFoto"];
-		$sql="INSERT INTO PerfilFoto(idPerfil,idFoto) values('$idPerfil','$lastId')";
-		$db->executeQuery($sql);
-		echo $sql;
+
     }// if file exist
     else{
     	echo "la foto ".$upload_image." ya existe. <br>";
