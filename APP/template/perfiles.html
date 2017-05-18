@@ -1,0 +1,46 @@
+<div id="buscar-perfil">
+	<angucomplete-alt id="ex1"
+        placeholder="Buscar Perfiles"
+        pause="100"
+        selected-object="seleccionarPerfilBusqueda"
+        local-data="perfiles"
+        search-fields="nombrePerfil"
+        title-field="nombrePerfil"
+        image-field="imgPerfil"
+        minlength="1"
+        directorio="{{directorioImgs}}"
+        id-perfil="idPerfil"
+        input-class=""/>
+</div>
+
+<md-input-container>
+  <input ng-model="search">
+</md-input-container>
+<md-input-container>
+  <md-select ng-model="search" placeholder="Tag" class="md-no-underline">
+    <md-option><em>None</em></md-option>
+    <md-option ng-repeat="tag in allTags track by $index | unique: 'tag'" value="{{tag}}">{{tag}}</md-option> 
+  </md-select>
+</md-input-container>
+
+<ul>
+	<li id="btn-agregar-perfil" ng-click="mostrarAgregarPerfil($event)">
+		+
+	</li>
+	<li id="todos-usuarios">
+		Todos
+	</li>
+	<li ng-repeat="perfil in perfiles | filter:search" ng-click="seleccionarPerfil(perfil.idPerfil,perfil.nombrePerfil)">
+		<img ng-src="{{directorioImgs+perfil.imgPerfil}}">
+		<a id="{{perfil.idPerfil}}" class="nombre-perfil" href="">{{perfil.nombrePerfil}}</a>
+		<!--<ul>
+			<li ng-repeat="tag in perfil.tagsArr">
+				<a href="">{{tag}}</a>
+			</li>
+		</ul>-->
+    <div class="opciones">
+          <a href="#" ng-click="mostrarModificarPerfil($event,perfil)"><i class="large material-icons">mode_edit</i></a>
+          <a href="#" ng-click="mostrarEliminarPerfil($event,perfil)"><i class="large material-icons">delete</i></a>
+    </div>
+	</li>
+</ul>

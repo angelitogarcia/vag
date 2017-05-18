@@ -13,7 +13,7 @@ class config{
  } 
  
  public static function getBBDDPwd(){
-  return ''; 
+  return '';
  }
  public static function getUrlImgs(){
  	return '../../../archivos/imagenes/';

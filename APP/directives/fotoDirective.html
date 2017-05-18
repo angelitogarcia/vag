@@ -1,0 +1,14 @@
+<li>
+	<img ng-src="{{directorio+foto.nombrePerfil+'/thumbs/'+foto.urlFoto}}"/>
+	<div class="opciones" layout="row" layout-align="center center">
+		<a href="" ng-click="eliminarFoto({id:foto.idFoto})">
+			<md-icon aria-label="android">delete</md-icon>
+		</a>
+		<a href="" ng-click="mostrarModificarFoto({evento:$event,foto:foto})">
+			<md-icon aria-label="android">edit</md-icon>
+		</a>
+		<a href="" ng-click="mostrarCambiarFotoPerfil({evento:$event,foto:foto})">
+			<md-icon aria-label="android">assignment_ind</md-icon>
+		</a>
+	</div>
+</li>

@@ -27,6 +27,7 @@ else {
         $perfil->ranking=$row['ranking'];
         $perfil->vistas=$row['vistas'];
         $perfil->descripcion=$row['descripcion'];
+        $perfil->tags=$row['tags'];
         array_push($perfiles, $perfil);
        }
 

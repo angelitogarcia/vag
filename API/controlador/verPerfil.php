@@ -26,6 +26,7 @@ else {
 	$perfil->ranking=$row['ranking'];
 	$perfil->vistas=$row['vistas'];
 	$perfil->descripcion=$row['descripcion'];
+	$perfil->tags=$row['tags'];
 
 }
 echo(json_encode($perfil,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));

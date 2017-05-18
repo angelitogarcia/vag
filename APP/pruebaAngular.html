@@ -1,62 +1,54 @@
 <html>
-	<head>
-		<title>Prueba Angular</title>
-		<script type="text/javascript" src="js/library/jquery-3.1.0.min.js"></script>
-		<script src="js/library/dropzone.js"></script>
-		<script type="text/javascript" src="https://code.angularjs.org/latest/angular.min.js"></script>
-		<script type="text/javascript" src="js/library/cropper.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/cropper.css">
-		<script type="text/javascript" src="js/dropzoneConfig.js"></script>
-		<script type="text/javascript" src="app.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/estilos.css">
-			<link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
-		<style type="text/css">
-			#Fotos ul li img{
-				width: 100px;
-				height: auto;
-			}
-			#cropContenedor{
-				width: 500px;
-				height: 500px;
-				margin: auto;
-			}
-			#Perfiles ul li img{
-				width: 100px;
-			}
-		</style>
-	</head>
-	<body ng-app="MyApp">
-	    <div ng-controller="FotosCtrl" id="Fotos">
-		    <ul >
-		      <li ng-repeat="foto in fotos"><img ng-src="{{directorioImgs+foto.nombrePerfil+'/thumbs/'+foto.urlFoto}}"/>
-		      	<a href="" ng-click="eliminarFoto(foto.idFoto)">X eliminar</a>
-		      	<a href="" ng-click="cambiarFotoPerfil(directorioImgs+foto.nombrePerfil+'/'+foto.urlFoto,foto.idPerfil,foto.nombrePerfil)">Cambiar Foto de Perfil</a>
-		      </li>
-		    </ul>
-		    <div id="cropContenedor"><a ng-click="cortarImg()" href="#" class="cortar">Cortar</a></div>
-		    <div id="dropFotos">
-		    	<div   id="fotosContenedor" class="dropzone" >
-			    </div>
-			    <button id="submit-all">Subir</button>
-			    <input type="checkbox" name="auto" value="auto" id="auto"> Subida Instantanea
-			    <button id="quitar">Limpiar area</button>
-		    </div>
-		</div>
-	    <hr>
-	    <div ng-controller="PerfilesCtrl" id="Perfiles">
-	  		<form ng-submit="agregarPerfil()">
-	  			<input type="text" name="nombre" placeholder="nombre" ng-model="formdata.nombrePerfil">
-	  			<input type="text" name="urlFb" placeholder="Url de facebook" ng-model="formdata.urlFb">
-	  			{{formdata}} <button>Agregar Perfil</button>
-	  		</form>
-	  		<ul>
-	  			<li ng-repeat="perfil in perfiles" ng-click="seleccionarPerfil(perfil.idPerfil)">
-	  				<img ng-src="{{directorioImgs+perfil.imgPerfil}}">
-	  				<a id="{{perfil.idPerfil}}" href="" >{{perfil.nombrePerfil}}</a> 
-	  				<a href="#">Modificar </a>
-	  				<a href="#" ng-click="eliminarPerfil(perfil.idPerfil)"> Eliminar</a>
-	  			</li>
-	  		</ul>
-	    </div>
-	</body>
+<head>
+	<title>Prueba Angular</title>
+	<!-- jquery -->
+	<script type="text/javascript" src="js/library/jquery-3.1.0.min.js"></script>
+	<script type="text/javascript" src="js/library/jquery-ui.min.js"></script>
+	<script src="js/library/dropzone.js"></script>
+	<script type="text/javascript" src="js/dropzoneConfig.js"></script>
+	<script type="text/javascript" src="js/library/cropper.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/cropper.css">
+
+	<!-- angular -->
+	  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+	<script type="text/javascript" src="https://code.angularjs.org/latest/angular.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.16/angular-filter.js"></script>
+	<script type="text/javascript" src="js/library/angucomplete-alt.js"></script>
+	  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+  	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+  	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+  	<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+
+  	<!-- I C O N O S -->
+
+  	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+	<!-- hoja de estilos -->
+	<link rel="stylesheet" type="text/css" href="css/estilos.css">
+	<link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
+</head>
+
+<body ng-app="MyApp">
+	<header ng-controller="FotosCtrl">
+		<span class="md-headline" id="perfilSeleccionado">Todos</span>
+		<md-button id="btn-agregar-fotos" class="md-raised md-primary" ng-click="mostrarAgregarFotos($event)"><md-icon class="small material-icons">library_add</md-icon>Agregar Fotos</md-button>
+		<md-input-container>
+		  <md-select ng-model="search" placeholder="Tag" class="md-no-underline">
+		    <md-option ng-repeat="tag in allTags" value="{{tag}}">{{tag}}</md-option> 
+		  </md-select>
+		</md-input-container>
+	</header>
+    <div ng-include="'template/fotos.html'" ng-controller="FotosCtrl" id="Fotos"> </div>
+    <div ng-include="'template/perfiles.html'" ng-controller="PerfilesCtrl" id="Perfiles"></div>
+    <div ng-include="'template/agregar-fotos.html'" ng-controller="agregarFotosCtrl" id="agregar-fotos" style="display:none"></div>
+    
+    <!-- ******************** MODALS *********************** -->
+
+
+	</div>
+	<div id="transparencia-negra"></div>
+</body>
+
+<script type="text/javascript" src="app.js"></script>
+<script type="text/javascript" src="js/eventos.js"></script>
 </html>	

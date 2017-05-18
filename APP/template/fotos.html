@@ -1,0 +1,19 @@
+<ul>
+	<foto ng-repeat="foto in fotos"
+ 		foto="foto" 
+ 		directorio="{{directorioImgs}}"
+ 		eliminar-foto="eliminarFoto(id)"
+ 		mostrar-cambiar-foto-perfil="mostrarCambiarFotoPerfil(evento,foto)"
+ 		mostrar-modificar-foto="mostrarModificarFoto(evento,foto)"
+ 		>
+	</foto>
+</ul>
+<div style="visibility: hidden">
+<div id="dialogCortar" class="md-dialog-container">
+	<md-dialog>
+		<div id="cropContenedor">
+		</div>
+		<a ng-click="cortarImg()" href="#" class="cortar">Cortar</a>
+	</md-dialog>	
+</div>
+</div>

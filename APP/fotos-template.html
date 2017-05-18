@@ -1,0 +1,10 @@
+<ul>
+	<foto ng-repeat="foto in fotos"
+ 		foto="foto" 
+ 		directorio="{{directorioImgs}}"
+ 		eliminar-foto="eliminarFoto(id)"
+ 		cambiar-foto-perfil="cambiarFotoPerfil(direccion,id,nombre)"
+ 		>
+	</foto>
+</ul>
+<div id="cropContenedor" ><a ng-click="cortarImg()" href="#" class="cortar">Cortar</a></div>

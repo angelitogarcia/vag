@@ -1,0 +1,36 @@
+<md-dialog id="agregar-perfil-form">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Modificar Foto</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <form>
+          <md-chips class="md-block" ng-model="foto.tagsArr" name="tags" 
+                 placeholder="Agrega un tag...">
+            <md-chip-template>
+              <strong>{{$chip}}</strong>
+            </md-chip-template>
+          </md-chips>
+        </form>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button ng-click="cancel()">
+       cancelar
+      </md-button>
+      <md-button ng-click="accept()">
+        Modificar
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

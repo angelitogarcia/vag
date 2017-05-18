@@ -9,29 +9,112 @@ li{
 #Fotos{
  	background-color: #eee;
  	position: absolute;
- 	width: 75%;
+ 	width: 100%;
  	left: 0px;
+ 	height: 100vh;
+}
+#Fotos ul li{
+	position: relative;
+}
+#Fotos ul li img{
+	width: 100px;
+	height: auto;
 }
 #Perfiles{
  background-color: #fff;
  position: absolute;
- width: 25%;
+ top: 0;
+ height: 100vh;
+ width: 600px;
  right: 0px;
 }
 
 #Perfiles ul{
 	display: flex;
-	justify-content: space-around ;
+	justify-content: space-around;
 }
 #Perfiles ul li{
 	width: 100px;
 	height: 100px;
 	background-color: #ccc;
 	cursor: pointer;
+	position: relative;
+}
+#Perfiles ul li .nombre-perfil{
+	font-size: 0.75em;
+	width: 90px;
+	padding: 5px;
+	background-color: #999;
+	color: #fff;
+	display: block;
+	text-overflow:ellipsis;
+	overflow:hidden;
+	white-space:nowrap; 
+}
+#Perfiles ul li .opciones,#Fotos ul li .opciones{
+	text-align: center;
+	position: absolute;
+	top: 0;
 }
 #Perfiles ul li:hover{
 	background-color: #ddd;
 }
+.close{
+	float: right;
+}
+
+#cropContenedor{
+	width: 500px;
+	height: 500px;
+	margin: auto;
+}
+#cropContenedor img{
+	max-width: 100%;
+}
+#Perfiles ul li img{
+	width: 100px;
+}
+/* ------------  Agregar Perfil ---------------- */
+#agregar-perfil-form{
+	width: 500px;
+}
+/* ------------- Buscar Perfiil --------------- */
+#buscar-perfil{
+	margin-bottom: 30px;
+}
+#buscar-perfil input{
+	width: 100%;
+	height: 50px;
+
+}
+#buscar-perfil img{
+	width: 50px;
+	height: 50px;
+}
+#buscar-perfil .angucomplete-row{} 
+#buscar-perfil .angucomplete-row div{
+	display: inline-block;
+}
 .dropzone.dz-drag-hover{
 	background-color: #999;
+}
+#dialogAgregarFotos md-dialog{
+	
+	width: 95%;
+	height: 700px;
+	background: none;
+}
+.dropzone{
+	height: 600px;
+}
+#transparencia-negra{
+	background-color: black;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left:0;
+	z-index: 5;
+	opacity: 0.7;
+	display: none;
 }

@@ -10,5 +10,6 @@ class Perfil
     var $ranking;
     var $vistas;
     var $descripcion;
+    var $tags;
 }
 ?>

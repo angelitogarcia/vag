@@ -30,8 +30,6 @@ foreach($_FILES as $eachFile)
 
 
 
-
-
 // --------- one file ----------
 
 /*

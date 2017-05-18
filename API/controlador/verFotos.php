@@ -31,8 +31,7 @@ else {
     $foto->ranking=$row['ranking'];
     $foto->idPerfil=$row['idPerfil'];
     $foto->nombrePerfil=$row['nombrePerfil'];
-    $foto->tags=$tag->tagsPorFoto($foto->idFoto);
-
+    $foto->tags=$row['tagsFoto'];
     array_push($fotos, $foto);
    }
 
