@@ -11,5 +11,6 @@ class Perfil
     var $vistas;
     var $descripcion;
     var $tags;
+    var $numFotos;
 }
 ?>

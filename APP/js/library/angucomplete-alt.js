@@ -59,6 +59,7 @@
         '      <div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div>' +
         '      <div ng-if="matchClass && result.description && result.description != \'\'" class="angucomplete-description" ng-bind-html="result.description"></div>' +
         '      <div ng-if="!matchClass && result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div>' +
+        '      <div ng-click="guardarFavorito({id:result.idPerfil})"><md-icon aria-label="android">favorite</md-icon></div>'+
         '    </div>' +
         '  </div>' +
         '</div>'
@@ -606,7 +607,8 @@
               description: formattedDesc,
               image: image,
               originalObject: responseData[i],
-              idPerfil:id
+              idPerfil:id,
+              perfil:responseData[i]
             };
           }
 
@@ -826,7 +828,8 @@
         focusFirst: '@',
         parseInput: '&',
         directorio:'@',
-        idPerfil:'@'
+        idPerfil:'@',
+        guardarFavorito:'&'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;

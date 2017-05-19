@@ -30,7 +30,8 @@
 
 <body ng-app="MyApp">
 	<header ng-controller="FotosCtrl">
-		<span class="md-headline" id="perfilSeleccionado">Todos</span>
+		<span class="md-headline" id="perfilSeleccionado">{{perfil.nombrePerfil}}</span>
+		<span>{{perfil.numFotos}}</span>
 		<md-button id="btn-agregar-fotos" class="md-raised md-primary" ng-click="mostrarAgregarFotos($event)"><md-icon class="small material-icons">library_add</md-icon>Agregar Fotos</md-button>
 		<md-input-container>
 		  <md-select ng-model="search" placeholder="Tag" class="md-no-underline">
@@ -50,5 +51,10 @@
 </body>
 
 <script type="text/javascript" src="app.js"></script>
+<script type="text/javascript" src="js/controlador/directivas.js"></script>
+<script type="text/javascript" src="js/controlador/fotosController.js"></script>
+<script type="text/javascript" src="js/controlador/perfilesController.js"></script>
+<script type="text/javascript" src="js/controlador/dialogControllers.js"></script>
+
 <script type="text/javascript" src="js/eventos.js"></script>
 </html>	

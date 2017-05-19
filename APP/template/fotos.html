@@ -1,10 +1,11 @@
 <ul>
-	<foto ng-repeat="foto in fotos"
+	<foto ng-repeat="foto in fotos | filter:search"
  		foto="foto" 
  		directorio="{{directorioImgs}}"
  		eliminar-foto="eliminarFoto(id)"
  		mostrar-cambiar-foto-perfil="mostrarCambiarFotoPerfil(evento,foto)"
  		mostrar-modificar-foto="mostrarModificarFoto(evento,foto)"
+ 		
  		>
 	</foto>
 </ul>

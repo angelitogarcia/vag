@@ -7,7 +7,8 @@ header('Content-Type: text/html; charset=utf-8');
 $perfiles=array();
 $db = new dbmanager();
 
-$sql = "SELECT * from Perfil";
+$sql = "SELECT Perfil.*, count(Perfil.idPerfil) as numFotos from Perfil
+left join Foto on Perfil.idPerfil = Foto.idPerfil group by Perfil.idPerfil";
 
 $resultado=$db->executeQuery($sql);
 
@@ -28,6 +29,7 @@ else {
         $perfil->vistas=$row['vistas'];
         $perfil->descripcion=$row['descripcion'];
         $perfil->tags=$row['tags'];
+        $perfil->numFotos=$row['numFotos'];
         array_push($perfiles, $perfil);
        }
 

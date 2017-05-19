@@ -10,6 +10,7 @@
         minlength="1"
         directorio="{{directorioImgs}}"
         id-perfil="idPerfil"
+        guardar-favorito="guardarFavorito(id)"
         input-class=""/>
 </div>
 
@@ -27,10 +28,10 @@
 	<li id="btn-agregar-perfil" ng-click="mostrarAgregarPerfil($event)">
 		+
 	</li>
-	<li id="todos-usuarios">
-		Todos
+	<li id="todos-usuarios" ng-click="verTodasFotos()">
+		
 	</li>
-	<li ng-repeat="perfil in perfiles | filter:search" ng-click="seleccionarPerfil(perfil.idPerfil,perfil.nombrePerfil)">
+	<li ng-repeat="perfil in perfiles | filter:search" ng-click="seleccionarPerfil(perfil,perfil.idPerfil,perfil.nombrePerfil)">
 		<img ng-src="{{directorioImgs+perfil.imgPerfil}}">
 		<a id="{{perfil.idPerfil}}" class="nombre-perfil" href="">{{perfil.nombrePerfil}}</a>
 		<!--<ul>
@@ -39,8 +40,15 @@
 			</li>
 		</ul>-->
     <div class="opciones">
+          <span>{{perfil.numFotos}}</span>
           <a href="#" ng-click="mostrarModificarPerfil($event,perfil)"><i class="large material-icons">mode_edit</i></a>
           <a href="#" ng-click="mostrarEliminarPerfil($event,perfil)"><i class="large material-icons">delete</i></a>
     </div>
 	</li>
+</ul>
+<ul>
+  <a href="" ng-click="borrarFavoritos()">Borrar todos los favoritos</a>
+  <li ng-repeat="perfil in perfiles | mostrarSolo:favoritos">
+      {{perfil.nombrePerfil}}
+  </li>
 </ul>
