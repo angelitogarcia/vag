@@ -1,11 +1,28 @@
+<header>
+	<span class="md-headline" id="perfilSeleccionado">{{perfil.nombrePerfil}}</span>
+	<span>{{perfil.numFotos}}</span>
+	<md-button id="btn-agregar-fotos" class="md-raised md-primary" ng-click="mostrarAgregarFotos($event)"><md-icon class="small material-icons">library_add</md-icon>Agregar Fotos</md-button>
+	<md-input-container>
+	  <md-select ng-model="search" placeholder="Tag" class="md-no-underline">
+	    <md-option ng-repeat="tag in allTags" value="{{tag}}">{{tag}}</md-option> 
+	  </md-select>
+	</md-input-container>
+	<md-input-container>
+	  	<md-select ng-model="criterio" placeholder="Ordenar por" class="md-no-underline">
+	    	<md-option value="ancho" ng-click="">Mas Resolución</md-option>
+	    	<md-option value="rating" ng-click="">Rating</md-option>
+	    	<md-option value="orientacion" ng-click="">Orientación</md-option>
+	  	</md-select>
+	</md-input-container>
+</header>
+
 <ul>
-	<foto ng-repeat="foto in fotos | filter:search"
+	<foto ng-repeat="foto in fotos | filter:search | orderBy:criterio"
  		foto="foto" 
  		directorio="{{directorioImgs}}"
  		eliminar-foto="eliminarFoto(id)"
  		mostrar-cambiar-foto-perfil="mostrarCambiarFotoPerfil(evento,foto)"
  		mostrar-modificar-foto="mostrarModificarFoto(evento,foto)"
- 		
  		>
 	</foto>
 </ul>

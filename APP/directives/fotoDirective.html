@@ -1,4 +1,4 @@
-<li>
+<li ancho="{{foto.ancho}}" alto="{{foto.alto}}" proporcion="{{foto.proporcion}}">
 	<img ng-src="{{directorio+foto.nombrePerfil+'/thumbs/'+foto.urlFoto}}"/>
 	<div class="opciones" layout="row" layout-align="center center">
 		<a href="" ng-click="eliminarFoto({id:foto.idFoto})">

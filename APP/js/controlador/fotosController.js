@@ -2,6 +2,7 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 	$scope.idPerfil=0;
 	$scope.directorioImgs="../../archivos/imagenes/";
 	$scope.allTags=[];
+	$scope.search="";
     $scope.cargarFotos=function(){
     	$http.get('http://localhost/vag/API/controlador/verFotos.php?limite=100').
 	    success(function(data, status, headers, config) {
@@ -37,6 +38,9 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 		$.each(temp, function(i, el){
 		    if($.inArray(el, $scope.allTags) === -1) $scope.allTags.push(el);
 		});
+	}
+	$scope.ordenarFotos=function(criterio){
+
 	}
     $scope.modificarFoto=function(foto){
     	$http.get('http://localhost/vag/API/controlador/modificarTagsFoto.php',{params:foto}).

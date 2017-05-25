@@ -10,7 +10,7 @@
         minlength="1"
         directorio="{{directorioImgs}}"
         id-perfil="idPerfil"
-        guardar-favorito="guardarFavorito(id)"
+        guardar-favorito="guardarFavorito(ev,id)"
         input-class=""/>
 </div>
 
@@ -23,7 +23,14 @@
     <md-option ng-repeat="tag in allTags track by $index | unique: 'tag'" value="{{tag}}">{{tag}}</md-option> 
   </md-select>
 </md-input-container>
+  <md-select ng-model="hola" placeholder="Ordenar por" class="md-no-underline">
+    <md-option value="abecedario" ng-click="ordenarPerfiles('nombrePerfil')" >Abecedario</md-option>
+    <md-option value="masvistos">Mas vistos</md-option> 
+    <md-option value="numFotos" ng-click="ordenarPerfiles('numFotos')" >Numero fotos</md-option> 
+  </md-select>
+<md-input-container>
 
+</md-input-container>
 <ul>
 	<li id="btn-agregar-perfil" ng-click="mostrarAgregarPerfil($event)">
 		+
@@ -42,13 +49,21 @@
     <div class="opciones">
           <span>{{perfil.numFotos}}</span>
           <a href="#" ng-click="mostrarModificarPerfil($event,perfil)"><i class="large material-icons">mode_edit</i></a>
+          <a href="#" ng-click="guardarFavorito($event,perfil.idPerfil)"><md-icon aria-label="android">favorite</md-icon></a>
           <a href="#" ng-click="mostrarEliminarPerfil($event,perfil)"><i class="large material-icons">delete</i></a>
     </div>
 	</li>
 </ul>
 <ul>
   <a href="" ng-click="borrarFavoritos()">Borrar todos los favoritos</a>
-  <li ng-repeat="perfil in perfiles | mostrarSolo:favoritos">
+  <li ng-repeat="perfil in perfiles | mostrarSolo:favoritos | orderBy:nombrePerfil" ng-click="seleccionarPerfil(perfil,perfil.idPerfil,perfil.nombrePerfil)">
       {{perfil.nombrePerfil}}
   </li>
 </ul>
+<h2>historial</h2>
+<a href="#" ng-click="borrarHistorial()">Borrar Historial</a>
+<div>
+  <p ng-repeat="perfil in perfilesHistorial | orderBy:'-horaVisita'">
+    {{perfil.nombrePerfil}} : {{perfil.horaVisita}}
+  </p>
+</div>

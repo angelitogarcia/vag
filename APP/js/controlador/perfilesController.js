@@ -13,6 +13,13 @@
 	$scope.ordenarPor="nombrePerfil";
 	$scope.directorioImgs="../../archivos/imagenes/";
 	$scope.allTags=[];
+	$scope.historial=[]
+	$scope.vistas={
+		idPerfil:"",
+		numVistas:""
+	}
+
+	perfilesHistorial=[];
 	$scope.cargarPerfiles=function(){
 		$http.get('http://localhost/vag/API/controlador/verPerfiles.php').
 	    success(function(data, status, headers, config) {
@@ -23,7 +30,7 @@
 			angular.forEach($scope.perfiles, function(perfil, key){
 				perfil.imgPerfil=perfil.imgPerfil+"?_ts=" + new Date().getTime();
 			})
-
+			$scope.actualizarHistorial();
 	    }).
 	    error(function(data, status, headers, config){
 	      // log error
@@ -32,6 +39,37 @@
 	$scope.actualizarFavoritos=function(){
 		var json = localStorage.getItem("favoritos");
 		$scope.favoritos=JSON.parse(json);
+	}
+	$scope.borrarFavoritos=function(){
+		var emptyArray=[];
+		var json=JSON.stringify(emptyArray);
+		localStorage.setItem("favoritos",json);
+		$scope.actualizarFavoritos();
+	}
+	$scope.borrarHistorial=function(){
+		var emptyArray=[];
+		var json=JSON.stringify(emptyArray);
+		localStorage.setItem("historial",json);
+		$scope.actualizarHistorial();
+	}
+	$scope.actualizarHistorial=function(){
+		if (localStorage.getItem("historial")!== null) {
+		  	var json=localStorage.getItem("historial");
+			$scope.historial=JSON.parse(json);
+			$scope.perfilesHistorial=$scope.filtrarIdsHistorial($scope.historial,$scope.perfiles);
+			console.log($scope.perfilesHistorial);
+		}
+	}
+	$scope.filtrarIdsHistorial=function(historial,perfiles){
+		filtrados=[];
+ 		$.each(perfiles,function(i,perfil){
+ 			if(arrayObjectIndexOf(historial,perfil.idPerfil,"id")>=0){
+ 				var indice=arrayObjectIndexOf(historial,perfil.idPerfil,"id");
+ 				perfil.horaVisita=historial[indice].hora;
+ 				filtrados.push(perfil);
+ 			} 
+ 		})
+ 		return filtrados;
 	}
 	$scope.separarTags=function(){
 		var temp=[];
@@ -138,26 +176,40 @@
 	}
 	$scope.seleccionarPerfil=function(perfil,id,nombre)
 	{
-
+		// ---- Guardar en historial ---------- //
+		//si no esta guardado en el historial
+		if(arrayObjectIndexOf($scope.historial,id,"id")===-1){
+			var d=new Date();
+			var f=d.toLocaleString();
+			var historico={id:id,hora:f};
+			$scope.historial.push(historico);
+			var json=JSON.stringify($scope.historial);
+			localStorage.setItem("historial",json);
+		}else{
+			var indice=arrayObjectIndexOf($scope.historial,id,"id");
+			$scope.historial.splice(indice,1);
+			var d=new Date();
+			var f=d.toLocaleString();
+			var historico={id:id,hora:f};
+			$scope.historial.push(historico);
+			var json=JSON.stringify($scope.historial);
+			localStorage.setItem("historial",json);
+		}
+		$scope.actualizarHistorial();
 		$("#perfilSeleccionado").text(nombre);
 		$scope.$parent.$broadcast("actualizarIdPerfil",perfil);
 		myDropzone.options.url="../API/controlador/agregarLocalFotos.php?idPerfil="+id;
 		console.log($scope);
 	}
-	$scope.mostrarToast=function(message){
-		$mdToast.show(
-      		$mdToast.simple()
-        	.textContent(message)
-	        .hideDelay(3000)
-	    );
-	}
+
 	$scope.eliminarFavorito=function(id){
 		var index=$scope.favoritos.indexOf(id);
 		$scope.favoritos.splice(index,1);
 		var json=JSON.stringify($scope.favoritos);
 		localStorage.setItem("favoritos",json);
 	}
-	$scope.guardarFavorito=function(id){
+	$scope.guardarFavorito=function(ev,id){
+		ev.stopPropagation();
 		if(window.localStorage){
 			if($scope.favoritos.indexOf(id)<0){
 				$scope.favoritos.push(id);
@@ -170,11 +222,16 @@
 		}
 		$scope.actualizarFavoritos();
 	}
-	$scope.borrarFavoritos=function(){
-		var emptyArray=[];
-		var json=JSON.stringify(emptyArray);
-		localStorage.setItem("favoritos",json);
-		$scope.actualizarFavoritos();
+
+	$scope.ordenarPerfiles=function(filtro){
+		$scope.perfiles = orderByFilter($scope.perfiles, filtro, true);
+	}
+	$scope.mostrarToast=function(message){
+		$mdToast.show(
+      		$mdToast.simple()
+        	.textContent(message)
+	        .hideDelay(3000)
+	    );
 	}
 	// --------- EVENTOS ---------- //
 	$scope.actualizarPerfiles=function(){
@@ -185,6 +242,7 @@
     });
 	$scope.cargarPerfiles();
 	$scope.actualizarFavoritos();
+
 	
 
 });
