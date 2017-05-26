@@ -12,5 +12,6 @@ class Perfil
     var $descripcion;
     var $tags;
     var $numFotos;
+    var $albums;
 }
 ?>

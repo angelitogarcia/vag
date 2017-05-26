@@ -27,16 +27,18 @@ else {
     $foto->ancho=$row['ancho'];
     $foto->alto=$row['alto'];
     $foto->proporcion=$row['proporcion'];
+    $foto->resolucion=$row['resolucion'];
     $foto->idFbFoto=$row['idFbFoto'];
     $foto->ranking=$row['ranking'];
     $foto->idPerfil=$row['idPerfil'];
     $foto->nombrePerfil=$row['nombrePerfil'];
     $foto->tags=$row['tagsFoto'];
+    $foto->album=$row['album'];
     array_push($fotos, $foto);
    }
 
 }
 
-print_r(json_encode($fotos,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
+print_r(json_encode($fotos,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_NUMERIC_CHECK));
 
 ?>

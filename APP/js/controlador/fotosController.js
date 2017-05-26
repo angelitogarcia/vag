@@ -3,7 +3,10 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 	$scope.directorioImgs="../../archivos/imagenes/";
 	$scope.allTags=[];
 	$scope.search="";
+	$scope.perfil=undefined;
+	$scope.albums=[];
     $scope.cargarFotos=function(){
+    	$scope.perfil=undefined;
     	$http.get('http://localhost/vag/API/controlador/verFotos.php?limite=100').
 	    success(function(data, status, headers, config) {
 
@@ -17,6 +20,7 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
     $scope.cargarFotos();
     $scope.fotosPerfil=function(perfil){
     	var id=perfil.idPerfil;
+    	$scope.cargarAlbumsPerfil();
     	$http.get('http://localhost/vag/API/controlador/verFotosPerfil.php',{params:{"idPerfil":id}}).
 	    success(function(data, status, headers, config) {
 	      	$scope.fotos = data;
@@ -60,6 +64,19 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 	      
 	    });
     }
+    $scope.cargarAlbumsPerfil=function()
+    {
+    	$scope.albums=JSON.parse($scope.perfil.albums);
+    }
+    $scope.modificarAlbums=function(id,albums){
+    	var json=JSON.stringify(albums);
+    	$http.get('http://localhost/vag/API/controlador/modificarAlbums.php',{params:{"idPerfil":id,"albums":json}}).
+	    success(function(data, status, headers, config) {
+	      	console.log(data);
+	    }).
+	    error(function(data, status, headers, config){
+	    });
+    }
     $scope.cambiarFotoPerfil=function(url,id,nombrePerfil){
 		var $img=$("<img class='cropper'/>");
 		$img.attr("src",url);
@@ -78,6 +95,22 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
       		}
 		})
 		$("#cropContenedor").prepend($img);
+    }
+    $scope.mostrarModificarAlbums=function(ev){
+    	$mdDialog.show({
+	      	controller: modificarAlbumsController,
+	      	templateUrl:'template/dialogoModificarAlbums.html',
+	      	parent: angular.element(document.body),
+	      	targetEvent: ev,
+	      	clickOutsideToClose:true,
+	      	fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+		})
+		.then(function(album){
+			$scope.albums.push(album);
+		    $scope.modificarAlbums($scope.perfil.idPerfil,$scope.albums);
+		}, function() {
+		    $scope.status = 'You cancelled the dialog.';
+		});
     }
     $scope.mostrarModificarFoto=function(ev,_foto){
     	$mdDialog.show({
@@ -139,8 +172,9 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
     }
     // --------- EVENTOS ---------- //
     $scope.$on("actualizarIdPerfil",function(event,data){
-    	$scope.fotosPerfil(data);
     	$scope.perfil=data;
+    	$scope.fotosPerfil(data);
+
     });
     $scope.$on("verTodasFotos",function(event){
     	$scope.cargarFotos();

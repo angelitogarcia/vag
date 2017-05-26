@@ -30,6 +30,7 @@ else {
         $perfil->descripcion=$row['descripcion'];
         $perfil->tags=$row['tags'];
         $perfil->numFotos=$row['numFotos'];
+        $perfil->albums=$row['albums'];
         array_push($perfiles, $perfil);
        }
 

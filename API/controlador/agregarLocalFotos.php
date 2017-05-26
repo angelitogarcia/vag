@@ -60,7 +60,7 @@ foreach($_FILES['file']['name'] as $index=>$name)
     {
     	if(move_uploaded_file($_FILES["file"]["tmp_name"][$index],$upload_image))
     	{
-    		$sql="INSERT INTO Foto(urlFoto,ancho,alto,proporcion,idFbFoto,extension,idPerfil) VALUES";
+    		$sql="INSERT INTO Foto(urlFoto,ancho,alto,proporcion,idFbFoto,extension,idPerfil,resolucion) VALUES";
     		$indice++;
            	list($width,$height)=getimagesize($upload_image);
            	//if($indice>1){$sql.=",";};
@@ -68,6 +68,7 @@ foreach($_FILES['file']['name'] as $index=>$name)
            	{
 
            		$proporcion=$height/$width;
+           		$resolucion=$height*$width;
 	           	$multiplo=$thumb_height/$height;
 	           	$thumb_width=intval($width*$multiplo);
 	           	$thumb_create=imagecreatetruecolor($thumb_width,$thumb_height);
@@ -106,11 +107,11 @@ foreach($_FILES['file']['name'] as $index=>$name)
 	                    imagejpeg($thumb_create,$thumb_dir.$filename,100);
 
 	           	}
-	           	$sql.="('$filename','$width','$height','$proporcion','','$file_ext','$idPerfil')";
+	           	$sql.="('$filename','$width','$height','$proporcion','','$file_ext','$idPerfil','$resolucion')";
             }
             else
             {
-            	$sql.="('$filename',0,0,0,'','$file_ext','$idPerfil')"; 
+            	$sql.="('$filename',0,0,0,'','$file_ext','$idPerfil',0)";
             }
             
 

@@ -43,3 +43,16 @@ function modificarFotoController($scope, $mdDialog,foto){
 		$mdDialog.hide($scope.foto);
 	}
 }
+function modificarAlbumsController($scope,$mdDialog){
+	$scope.accion="Crear";
+	$scope.album={
+		nombre:"",
+		caratulaAlbum:""
+	};
+	$scope.cancel=function(){
+		$mdDialog.cancel();
+	}
+	$scope.accept=function(){
+		$mdDialog.hide($scope.album);
+	}
+}

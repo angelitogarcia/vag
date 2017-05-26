@@ -1,21 +1,27 @@
 <header>
 	<span class="md-headline" id="perfilSeleccionado">{{perfil.nombrePerfil}}</span>
 	<span>{{perfil.numFotos}}</span>
-	<md-button id="btn-agregar-fotos" class="md-raised md-primary" ng-click="mostrarAgregarFotos($event)"><md-icon class="small material-icons">library_add</md-icon>Agregar Fotos</md-button>
+	<md-button ng-hide="perfil == undefined" id="btn-agregar-fotos" class="md-raised md-primary" ng-click="mostrarAgregarFotos($event)"><md-icon class="small material-icons">library_add</md-icon>Agregar Fotos</md-button>
 	<md-input-container>
+		<label>Tags:</label>
 	  <md-select ng-model="search" placeholder="Tag" class="md-no-underline">
+	  	<md-option value="">Ninguno</md-option> 
 	    <md-option ng-repeat="tag in allTags" value="{{tag}}">{{tag}}</md-option> 
 	  </md-select>
 	</md-input-container>
 	<md-input-container>
+		<label>Ordenar por:</label>
 	  	<md-select ng-model="criterio" placeholder="Ordenar por" class="md-no-underline">
-	    	<md-option value="ancho" ng-click="">Mas Resolución</md-option>
-	    	<md-option value="rating" ng-click="">Rating</md-option>
-	    	<md-option value="orientacion" ng-click="">Orientación</md-option>
+	    	<md-option value="-resolucion" ng-click="">Mas Resolución</md-option>
+	    	<md-option value="rating" ng-click="">Mas Rating</md-option>
+	    	<md-option value="proporcion" ng-click="">Orientación</md-option>
 	  	</md-select>
 	</md-input-container>
+	<md-button ng-hide="perfil == undefined" class="md-raised md-primary" ng-click="mostrarModificarAlbums($event)"><md-icon class="small material-icons">library_add</md-icon>Crear Albúm</md-button>
 </header>
-
+<div>
+	Albums: <span ng-repeat="album in albums track by $index">{{album.nombre}}</span>
+</div>
 <ul>
 	<foto ng-repeat="foto in fotos | filter:search | orderBy:criterio"
  		foto="foto" 

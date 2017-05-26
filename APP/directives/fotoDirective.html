@@ -1,4 +1,4 @@
-<li ancho="{{foto.ancho}}" alto="{{foto.alto}}" proporcion="{{foto.proporcion}}">
+<li ancho="{{foto.ancho}}" alto="{{foto.alto}}" proporcion="{{foto.proporcion}}" album="{{foto.album}}">
 	<img ng-src="{{directorio+foto.nombrePerfil+'/thumbs/'+foto.urlFoto}}"/>
 	<div class="opciones" layout="row" layout-align="center center">
 		<a href="" ng-click="eliminarFoto({id:foto.idFoto})">
@@ -11,5 +11,6 @@
 			<md-icon aria-label="android">assignment_ind</md-icon>
 		</a>
 		<p>{{foto.tags}}</p>
+		<p>{{foto.ancho}} x {{foto.alto}}</p>
 	</div>
 </li>

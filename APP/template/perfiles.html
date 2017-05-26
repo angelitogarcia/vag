@@ -23,13 +23,12 @@
     <md-option ng-repeat="tag in allTags track by $index | unique: 'tag'" value="{{tag}}">{{tag}}</md-option> 
   </md-select>
 </md-input-container>
-  <md-select ng-model="hola" placeholder="Ordenar por" class="md-no-underline">
-    <md-option value="abecedario" ng-click="ordenarPerfiles('nombrePerfil')" >Abecedario</md-option>
-    <md-option value="masvistos">Mas vistos</md-option> 
-    <md-option value="numFotos" ng-click="ordenarPerfiles('numFotos')" >Numero fotos</md-option> 
-  </md-select>
 <md-input-container>
-
+  <md-select ng-model="criterio" placeholder="Ordenar por" class="md-no-underline">
+    <md-option value="nombrePerfil">Abecedario</md-option>
+    <md-option value="vistas">Mas vistos</md-option> 
+    <md-option value="numFotos" >Numero fotos</md-option> 
+  </md-select>
 </md-input-container>
 <ul>
 	<li id="btn-agregar-perfil" ng-click="mostrarAgregarPerfil($event)">
@@ -38,7 +37,7 @@
 	<li id="todos-usuarios" ng-click="verTodasFotos()">
 		
 	</li>
-	<li ng-repeat="perfil in perfiles | filter:search" ng-click="seleccionarPerfil(perfil,perfil.idPerfil,perfil.nombrePerfil)">
+	<li ng-repeat="perfil in perfiles | filter:search | orderBy:criterio:reverse" ng-click="seleccionarPerfil(perfil,perfil.idPerfil,perfil.nombrePerfil)">
 		<img ng-src="{{directorioImgs+perfil.imgPerfil}}">
 		<a id="{{perfil.idPerfil}}" class="nombre-perfil" href="">{{perfil.nombrePerfil}}</a>
 		<!--<ul>

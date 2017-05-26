@@ -15,7 +15,7 @@ $resultado=$db->executeQuery($sql);
 if(!$resultado) {
     die('<br/>MySQL Error: ' . mysql_error());
 }
-else {
+else{
     $row = mysql_fetch_array($resultado);
 	$perfil->idPerfil=$row['idPerfil'];
 	$perfil->nombrePerfil=$row['nombrePerfil'];
@@ -27,6 +27,7 @@ else {
 	$perfil->vistas=$row['vistas'];
 	$perfil->descripcion=$row['descripcion'];
 	$perfil->tags=$row['tags'];
+	$perfil->albums=$row['albums'];
 
 }
 echo(json_encode($perfil,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
