@@ -9,6 +9,7 @@
  	}
  })
  app.controller("PerfilesCtrl",function($scope,$http,$mdDialog,$mdToast,orderByFilter){
+ 	$scope.panelPerfiles=false;
  	$scope.favoritos=[];
 	$scope.ordenarPor="nombrePerfil";
 	$scope.directorioImgs="../../archivos/imagenes/";
@@ -57,7 +58,6 @@
 		  	var json=localStorage.getItem("historial");
 			$scope.historial=JSON.parse(json);
 			$scope.perfilesHistorial=$scope.filtrarIdsHistorial($scope.historial,$scope.perfiles);
-			console.log($scope.perfilesHistorial);
 		}
 	}
 	$scope.filtrarIdsHistorial=function(historial,perfiles){
@@ -168,7 +168,7 @@
 	$scope.seleccionarPerfilBusqueda=function(perfil){
 		if(perfil!=undefined)
 		{
-			$scope.seleccionarPerfil(perfil,perfil.idPerfil,perfil.title);
+			$scope.seleccionarPerfil(perfil.perfil,perfil.idPerfil,perfil.title);
 		}
 	}
 	$scope.verTodasFotos=function(){
@@ -199,7 +199,6 @@
 		$("#perfilSeleccionado").text(nombre);
 		$scope.$parent.$broadcast("actualizarIdPerfil",perfil);
 		myDropzone.options.url="../API/controlador/agregarLocalFotos.php?idPerfil="+id;
-		console.log($scope);
 	}
 
 	$scope.eliminarFavorito=function(id){
@@ -225,6 +224,10 @@
 
 	$scope.ordenarPerfiles=function(filtro){
 		$scope.perfiles = orderByFilter($scope.perfiles, filtro, true);
+	}
+	$scope.tooglePanelPerfiles=function()
+	{
+		 $scope.panelPerfiles = !$scope.panelPerfiles;
 	}
 	$scope.mostrarToast=function(message){
 		$mdToast.show(

@@ -4,7 +4,7 @@
 	<md-button ng-hide="perfil == undefined" id="btn-agregar-fotos" class="md-raised md-primary" ng-click="mostrarAgregarFotos($event)"><md-icon class="small material-icons">library_add</md-icon>Agregar Fotos</md-button>
 	<md-input-container>
 		<label>Tags:</label>
-	  <md-select ng-model="search" placeholder="Tag" class="md-no-underline">
+	  <md-select ng-model="data.search" placeholder="Tag" class="md-no-underline">
 	  	<md-option value="">Ninguno</md-option> 
 	    <md-option ng-repeat="tag in allTags" value="{{tag}}">{{tag}}</md-option> 
 	  </md-select>
@@ -17,21 +17,29 @@
 	    	<md-option value="proporcion" ng-click="">Orientación</md-option>
 	  	</md-select>
 	</md-input-container>
-	<md-button ng-hide="perfil == undefined" class="md-raised md-primary" ng-click="mostrarModificarAlbums($event)"><md-icon class="small material-icons">library_add</md-icon>Crear Albúm</md-button>
+
+
 </header>
 <div>
-	Albums: <span ng-repeat="album in albums track by $index">{{album.nombre}}</span>
+	Albums: <a ng-click="seleccionarAlbum(album.nombre)" ng-repeat="album in albums track by $index">{{album.nombre}}, </a>
+	<md-button ng-hide="perfil == undefined" class="md-raised md-primary" ng-click="mostrarModificarAlbums($event)"><md-icon class="small material-icons">library_add</md-icon>Crear Albúm</md-button>
 </div>
-<ul>
-	<foto ng-repeat="foto in fotos | filter:search | orderBy:criterio"
+<ul id="grid">
+	<foto class="grid-item" ng-repeat="foto in fotos | filter:data.search | orderBy:criterio"
  		foto="foto" 
  		directorio="{{directorioImgs}}"
  		eliminar-foto="eliminarFoto(id)"
  		mostrar-cambiar-foto-perfil="mostrarCambiarFotoPerfil(evento,foto)"
  		mostrar-modificar-foto="mostrarModificarFoto(evento,foto)"
+ 		last="$last"
+ 		layout-grid="layoutGrid()"
+ 		data-ng-click="mostrarCanvas(fotos,directorioImgs,$index)"
+ 		album="foto.album"
  		>
 	</foto>
 </ul>
+
+<canvas id="canvas" style="" ng-keypress="down($event)" tabindex="1"></canvas>
 <div style="visibility: hidden">
 <div id="dialogCortar" class="md-dialog-container">
 	<md-dialog>

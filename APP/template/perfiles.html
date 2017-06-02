@@ -1,68 +1,102 @@
-<div id="buscar-perfil">
-	<angucomplete-alt id="ex1"
-        placeholder="Buscar Perfiles"
-        pause="100"
-        selected-object="seleccionarPerfilBusqueda"
-        local-data="perfiles"
-        search-fields="nombrePerfil"
-        title-field="nombrePerfil"
-        image-field="imgPerfil"
-        minlength="1"
-        directorio="{{directorioImgs}}"
-        id-perfil="idPerfil"
-        guardar-favorito="guardarFavorito(ev,id)"
-        input-class=""/>
-</div>
-
-<md-input-container>
-  <input ng-model="search">
-</md-input-container>
-<md-input-container>
-  <md-select ng-model="search" placeholder="Tag" class="md-no-underline">
-    <md-option><em>None</em></md-option>
-    <md-option ng-repeat="tag in allTags track by $index | unique: 'tag'" value="{{tag}}">{{tag}}</md-option> 
-  </md-select>
-</md-input-container>
-<md-input-container>
-  <md-select ng-model="criterio" placeholder="Ordenar por" class="md-no-underline">
-    <md-option value="nombrePerfil">Abecedario</md-option>
-    <md-option value="vistas">Mas vistos</md-option> 
-    <md-option value="numFotos" >Numero fotos</md-option> 
-  </md-select>
-</md-input-container>
-<ul>
-	<li id="btn-agregar-perfil" ng-click="mostrarAgregarPerfil($event)">
-		+
-	</li>
-	<li id="todos-usuarios" ng-click="verTodasFotos()">
-		
-	</li>
-	<li ng-repeat="perfil in perfiles | filter:search | orderBy:criterio:reverse" ng-click="seleccionarPerfil(perfil,perfil.idPerfil,perfil.nombrePerfil)">
-		<img ng-src="{{directorioImgs+perfil.imgPerfil}}">
-		<a id="{{perfil.idPerfil}}" class="nombre-perfil" href="">{{perfil.nombrePerfil}}</a>
-		<!--<ul>
-			<li ng-repeat="tag in perfil.tagsArr">
-				<a href="">{{tag}}</a>
-			</li>
-		</ul>-->
-    <div class="opciones">
-          <span>{{perfil.numFotos}}</span>
-          <a href="#" ng-click="mostrarModificarPerfil($event,perfil)"><i class="large material-icons">mode_edit</i></a>
-          <a href="#" ng-click="guardarFavorito($event,perfil.idPerfil)"><md-icon aria-label="android">favorite</md-icon></a>
-          <a href="#" ng-click="mostrarEliminarPerfil($event,perfil)"><i class="large material-icons">delete</i></a>
-    </div>
-	</li>
-</ul>
-<ul>
+<!-- ******** F A V O R I T O S ********** -->
+<!--<ul id="favoritos">
   <a href="" ng-click="borrarFavoritos()">Borrar todos los favoritos</a>
   <li ng-repeat="perfil in perfiles | mostrarSolo:favoritos | orderBy:nombrePerfil" ng-click="seleccionarPerfil(perfil,perfil.idPerfil,perfil.nombrePerfil)">
-      {{perfil.nombrePerfil}}
+      
   </li>
-</ul>
-<h2>historial</h2>
-<a href="#" ng-click="borrarHistorial()">Borrar Historial</a>
-<div>
-  <p ng-repeat="perfil in perfilesHistorial | orderBy:'-horaVisita'">
-    {{perfil.nombrePerfil}} : {{perfil.horaVisita}}
-  </p>
+</ul>-->
+
+<div id="favoritos">
+  <md-grid-list
+  md-cols="1"
+  md-gutter="1em" md-row-height="100px">
+      <md-grid-tile>
+          <a href="" ng-click="tooglePanelPerfiles(showDetail != showDetail)"><md-icon aria-label="android">search</md-icon></a>
+      </md-grid-tile>
+      <md-grid-tile ng-repeat="perfil in perfiles | mostrarSolo:favoritos | orderBy:nombrePerfil"
+      md-colspan-sm="1"
+      md-colspan-xs="1"
+      ng-click="seleccionarPerfil(perfil,perfil.idPerfil,perfil.nombrePerfil)"
+      >
+          <md-grid-tile-footer><h3>{{perfil.nombrePerfil}}</h3></md-grid-tile-footer>
+      </md-grid-tile>
+  </md-grid-list>
+</div>
+
+<div id="contenedor-perfiles" class="cerrado" ng-class="{'abierto': panelPerfiles}">
+
+  <!-- ******** B U S C A R ********** -->
+
+  <div id="buscar-perfil">
+  	<angucomplete-alt id="ex1"
+          placeholder="Buscar Perfiles"
+          pause="100"
+          selected-object="seleccionarPerfilBusqueda"
+          local-data="perfiles"
+          search-fields="nombrePerfil"
+          title-field="nombrePerfil"
+          image-field="imgPerfil"
+          minlength="1"
+          directorio="{{directorioImgs}}"
+          id-perfil="idPerfil"
+          guardar-favorito="guardarFavorito(ev,id)"
+          input-class=""/>
+  </div>
+
+
+  <!-- ******** F I L T R O  Y   O R D E N ********** -->
+  <div style="padding:20px">
+      <md-input-container>
+        <input ng-model="search">
+      </md-input-container>
+      <md-input-container>
+        <md-select ng-model="search" placeholder="Tag" class="md-no-underline">
+          <md-option><em>None</em></md-option>
+          <md-option ng-repeat="tag in allTags track by $index | unique: 'tag'" value="{{tag}}">{{tag}}</md-option> 
+        </md-select>
+      </md-input-container>
+      <md-input-container>
+        <md-select ng-model="criterio" placeholder="Ordenar por" class="md-no-underline">
+          <md-option value="nombrePerfil">Abecedario</md-option>
+          <md-option value="vistas">Mas vistos</md-option> 
+          <md-option value="numFotos" >Numero fotos</md-option>
+        </md-select>
+      </md-input-container>
+
+      <!-- ******** P E R F I L E S ********** -->
+
+      <ul>
+      	<li id="btn-agregar-perfil" ng-click="mostrarAgregarPerfil($event)">
+      		+
+      	</li>
+      	<li id="todos-usuarios" ng-click="verTodasFotos()">
+      		
+      	</li>
+      	<li ng-repeat="perfil in perfiles | filter:search | orderBy:criterio:reverse" ng-click="seleccionarPerfil(perfil,perfil.idPerfil,perfil.nombrePerfil)">
+      		<img ng-src="{{directorioImgs+perfil.imgPerfil}}">
+      		<a id="{{perfil.idPerfil}}" class="nombre-perfil" href="">{{perfil.nombrePerfil}}</a>
+      		<!--<ul>
+      			<li ng-repeat="tag in perfil.tagsArr">
+      				<a href="">{{tag}}</a>
+      			</li>
+      		</ul>-->
+          <div class="opciones">
+                <span>{{perfil.numFotos}}</span>
+                <a href="#" ng-click="mostrarModificarPerfil($event,perfil)"><i class="large material-icons">mode_edit</i></a>
+                <a href="#" ng-click="guardarFavorito($event,perfil.idPerfil)"><md-icon aria-label="android">favorite</md-icon></a>
+                <a href="#" ng-click="mostrarEliminarPerfil($event,perfil)"><i class="large material-icons">delete</i></a>
+          </div>
+      	</li>
+      </ul>
+
+      <!-- ******** H I S T O R I A L ********** -->
+
+      <h2>historial</h2>
+      <a href="#" ng-click="borrarHistorial()">Borrar Historial</a>
+      <div>
+        <p ng-repeat="perfil in perfilesHistorial | orderBy:'-horaVisita'">
+          {{perfil.nombrePerfil}} : {{perfil.horaVisita}}
+        </p>
+      </div>
+  </div>
 </div>

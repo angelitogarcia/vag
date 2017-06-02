@@ -5,13 +5,31 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 	$scope.search="";
 	$scope.perfil=undefined;
 	$scope.albums=[];
+	var $grid;
+	$scope.data={
+		search:""
+	}
+	$scope.$on('$includeContentLoaded', function(event) {
+        
+    });
+    $scope.layoutGrid= function() {
+    	$("#grid").gridalicious({
+            selector: ".grid-item",
+            width: 200,
+            gutter:1,
+            animate:true
+        });
+    };
+    $scope.down=function(event){
+    	
+    }
     $scope.cargarFotos=function(){
     	$scope.perfil=undefined;
     	$http.get('http://localhost/vag/API/controlador/verFotos.php?limite=100').
 	    success(function(data, status, headers, config) {
-
 	      	$scope.fotos = data;
 	      	$scope.separarTags();
+
 	    }).
 	    error(function(data, status, headers, config){
 	      // log error
@@ -67,6 +85,10 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
     $scope.cargarAlbumsPerfil=function()
     {
     	$scope.albums=JSON.parse($scope.perfil.albums);
+    }
+    $scope.seleccionarAlbum=function(nombreAlbum){
+
+    		$scope.data.search=nombreAlbum;
     }
     $scope.modificarAlbums=function(id,albums){
     	var json=JSON.stringify(albums);
@@ -146,8 +168,11 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 		      targetEvent: ev,
 		      clickOutsideToClose:true,
 		      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-
 		})
+	}
+	$scope.mostrarCanvas=function(fotos,directorio,id){
+		initCanvasViewer(fotos,id,directorio);
+		$("#canvas").show();
 	}
     $scope.cortarImg=function(){
     	$(".cropper").cropper('getCroppedCanvas').toBlob(function (blob) {

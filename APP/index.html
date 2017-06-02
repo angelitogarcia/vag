@@ -2,9 +2,13 @@
 <head>
 	<title>Prueba Angular</title>
 	<!-- jquery -->
-	<script type="text/javascript" src="js/utilities.js"></script>
-	<script type="text/javascript" src="js/library/jquery-3.1.0.min.js"></script>
+
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
 	<script type="text/javascript" src="js/library/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="js/utilities.js"></script>
 	<script src="js/library/dropzone.js"></script>
 	<script type="text/javascript" src="js/dropzoneConfig.js"></script>
 	<script type="text/javascript" src="js/library/cropper.min.js"></script>
@@ -32,7 +36,7 @@
 <body ng-app="MyApp">
 
     <div ng-include="'template/fotos.html'" ng-controller="FotosCtrl" id="Fotos"> </div>
-    <div ng-include="'template/perfiles.html'" ng-controller="PerfilesCtrl" id="Perfiles"></div>
+    <div ng-include="'template/perfiles.html'" ng-controller="PerfilesCtrl" id="Perfiles" ng-class="{'abierto': panelPerfiles}"></div>
     <div ng-include="'template/agregar-fotos.html'" ng-controller="agregarFotosCtrl" id="agregar-fotos" style="display:none"></div>
    
 </body>
@@ -42,4 +46,10 @@
 <script type="text/javascript" src="js/controlador/fotosController.js"></script>
 <script type="text/javascript" src="js/controlador/perfilesController.js"></script>
 <script type="text/javascript" src="js/controlador/dialogControllers.js"></script>
+<script type="text/javascript" src="js/canvasViewer.js"></script>
+<script type="text/javascript" src="https://imagesloaded.desandro.com/imagesloaded.pkgd.js"></script>
+<script type="text/javascript" src="js/library/jquery.grid-a-licious.min.js"></script>
+<script type="">
+
+</script>
 </html>	
