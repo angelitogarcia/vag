@@ -1,12 +1,24 @@
 <div id="dialogAgregarFotos" class="md-dialog-container">
 	<md-dialog>
-		 <div id="dropFotos">
+		<md-toolbar>
+			<h2>Agregar Fotos</h2>
+			<md-input-container>
+				<label>Agregar a Albúm:</label>
+		  		<md-select ng-model="album" placeholder="Ordenar por" class="md-no-underline">
+		    	<md-option value="-resolucion" ng-click="">Mas Resolución</md-option>
+		  		</md-select>
+			</md-input-container>
+		</md-toolbar>
+		<div id="dropFotos">
 
 			<div id="fotosContenedor" class="dropzone" >
 		    </div>
-		    <button id="submit-all">Subir</button>
+
+		</div>
+		<md-dialog-actions layout="row">
+			<button id="submit-all">Subir</button>
 		    <input type="checkbox" name="auto" value="auto" id="auto"> Subida Instantanea
 		    <button id="quitar">Limpiar area</button>
-		</div>
+		</md-dialog-actions>
 	</md-dialog>
 </div>

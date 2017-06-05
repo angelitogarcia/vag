@@ -35,9 +35,15 @@
  		layout-grid="layoutGrid()"
  		data-ng-click="mostrarCanvas(fotos,directorioImgs,$index)"
  		album="foto.album"
+ 		ng-right-click="seleccionarFoto(foto)"
+ 		ng-class="{'seleccionada':foto.seleccionada}"
  		>
 	</foto>
 </ul>
+<div id="opcionesSeleccionadas">
+	<hr>
+	{{fotosSeleccionadas.length}}
+</div>
 
 <canvas id="canvas" style="" ng-keypress="down($event)" tabindex="1"></canvas>
 <div style="visibility: hidden">

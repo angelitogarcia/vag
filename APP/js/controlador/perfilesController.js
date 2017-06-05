@@ -229,7 +229,7 @@
 	{
 		 $scope.panelPerfiles = !$scope.panelPerfiles;
 	}
-	$scope.mostrarToast=function(message){
+	$scope.mostrarToast=function(message){ 
 		$mdToast.show(
       		$mdToast.simple()
         	.textContent(message)

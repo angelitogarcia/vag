@@ -9,8 +9,9 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 	$scope.data={
 		search:""
 	}
+	$scope.fotosSeleccionadas=[];
 	$scope.$on('$includeContentLoaded', function(event) {
-        
+
     });
     $scope.layoutGrid= function() {
     	$("#grid").gridalicious({
@@ -82,14 +83,49 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 	      
 	    });
     }
+
+    // ********************************************* //
+    //					A L B U M S 				 //
+    // ********************************************* //
+
+    $scope.mostrarModificarAlbums=function(ev){
+    	$mdDialog.show({
+	      	controller: modificarAlbumsController,
+	      	templateUrl:'template/dialogoModificarAlbums.html',
+	      	parent: angular.element(document.body),
+	      	targetEvent: ev,
+	      	clickOutsideToClose:true,
+	      	fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+		})
+		.then(function(album){
+			$scope.albums.push(album);
+		    $scope.modificarAlbums($scope.perfil.idPerfil,$scope.albums);
+		}, function() {
+		    $scope.status = 'You cancelled the dialog.';
+		});
+    }
+    $scope.seleccionarAlbum=function(nombreAlbum){
+    	$scope.data.search=nombreAlbum;
+    }
     $scope.cargarAlbumsPerfil=function()
     {
     	$scope.albums=JSON.parse($scope.perfil.albums);
     }
-    $scope.seleccionarAlbum=function(nombreAlbum){
 
-    		$scope.data.search=nombreAlbum;
+    $scope.agregarFotoAlbum=function(nombreAlbum,foto){
+	    $http.get('http://localhost/vag/API/controlador/modificarAlbums.php',{params:{"idFoto":foto.idFoto,"nombreAlbum":nombreAlbum}}).
+		success(function(data, status, headers, config){
+
+		}).error(function(data, status, headers, config){
+
+		});
     }
+    $scope.agregarFotosAlbum=function(nombreAlbum,fotos){
+    	for(var i=0;i<fotos.length;i++){
+    		$scope.agregarFotoAlbum(nombreAlbum,foto[i]);
+    	}
+    }
+
     $scope.modificarAlbums=function(id,albums){
     	var json=JSON.stringify(albums);
     	$http.get('http://localhost/vag/API/controlador/modificarAlbums.php',{params:{"idPerfil":id,"albums":json}}).
@@ -99,6 +135,7 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 	    error(function(data, status, headers, config){
 	    });
     }
+    // ************ ********************* //
     $scope.cambiarFotoPerfil=function(url,id,nombrePerfil){
 		var $img=$("<img class='cropper'/>");
 		$img.attr("src",url);
@@ -118,22 +155,7 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 		})
 		$("#cropContenedor").prepend($img);
     }
-    $scope.mostrarModificarAlbums=function(ev){
-    	$mdDialog.show({
-	      	controller: modificarAlbumsController,
-	      	templateUrl:'template/dialogoModificarAlbums.html',
-	      	parent: angular.element(document.body),
-	      	targetEvent: ev,
-	      	clickOutsideToClose:true,
-	      	fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-		})
-		.then(function(album){
-			$scope.albums.push(album);
-		    $scope.modificarAlbums($scope.perfil.idPerfil,$scope.albums);
-		}, function() {
-		    $scope.status = 'You cancelled the dialog.';
-		});
-    }
+
     $scope.mostrarModificarFoto=function(ev,_foto){
     	$mdDialog.show({
 			locals:{foto:_foto},
@@ -194,6 +216,19 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 			    }
 			});
 		});
+    }
+    // seleccionar foto con boton derecho 
+    $scope.seleccionarFoto=function(foto){
+    	foto.seleccionada=!foto.seleccionada;
+    	if(foto.seleccionada){
+    		$scope.fotosSeleccionadas.push(foto);
+    	}else{
+    		if(arrayObjectIndexOf($scope.fotosSeleccionadas,foto.idFoto,"idFoto")>=0)
+    		{
+    			var id=arrayObjectIndexOf($scope.fotosSeleccionadas,foto.idFoto,"idFoto");
+    			$scope.fotosSeleccionadas.splice(id);
+    		}
+    	}
     }
     // --------- EVENTOS ---------- //
     $scope.$on("actualizarIdPerfil",function(event,data){
