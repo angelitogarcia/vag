@@ -8,6 +8,9 @@ a{
 a:hover{
 	opacity: 0.7;
 }
+body{
+	overflow: hidden;
+}
 li{
 	list-style: none;
 }
@@ -29,15 +32,24 @@ foto.seleccionada{
 #Fotos ul li{
 	position: relative;
 }
-
+#opcionesSeleccionadas{
+	position: absolute;
+	bottom:-100;
+	left: 0;
+	height: 100px;
+	transition:bottom 0.5s;
+}
+#opcionesSeleccionadas.abierto{
+	bottom: 0px;
+}
 #Perfiles{
- position: absolute;
- top: 0;
- height: 100vh;
- width: 100px;
- right: 0px;
- overflow: hidden;
- transition: width 0.5s;
+	position: absolute;
+	top: 0;
+	height: 100vh;
+	width: 100px;
+	right: 0px;
+	overflow: hidden;
+	transition: width 0.5s;
 }
 #Perfiles.abierto{
 	width: 700px;

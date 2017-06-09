@@ -4,9 +4,10 @@ app.directive('foto',function($timeout){
 		scope:{
 			foto:'=',
 			directorio:'@',
-			eliminarFoto:'&',	
+			mostrarEliminarFoto:'&',	
 			mostrarCambiarFotoPerfil:'&',
 			mostrarModificarFoto:'&',
+			modificarFotoAlbum:'&',
 			album:'@',
 			last:'=',
 			layoutGrid:'&'

@@ -224,11 +224,18 @@
 
 	$scope.ordenarPerfiles=function(filtro){
 		$scope.perfiles = orderByFilter($scope.perfiles, filtro, true);
+
 	}
 	$scope.tooglePanelPerfiles=function()
 	{
 		 $scope.panelPerfiles = !$scope.panelPerfiles;
 	}
+	$("body").keydown(function(e){
+		if ( e.which == 80 && e.ctrlKey == true ) {
+			$scope.panelPerfiles = !$scope.panelPerfiles;
+		   	$scope.$apply();
+		}
+	})
 	$scope.mostrarToast=function(message){ 
 		$mdToast.show(
       		$mdToast.simple()

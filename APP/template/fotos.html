@@ -1,7 +1,7 @@
 <header>
 	<span class="md-headline" id="perfilSeleccionado">{{perfil.nombrePerfil}}</span>
 	<span>{{perfil.numFotos}}</span>
-	<md-button ng-hide="perfil == undefined" id="btn-agregar-fotos" class="md-raised md-primary" ng-click="mostrarAgregarFotos($event)"><md-icon class="small material-icons">library_add</md-icon>Agregar Fotos</md-button>
+	<md-button ng-hide="perfil == undefined" id="btn-agregar-fotos" class="md-raised md-primary" ng-click="mostrarAgregarFotos($event,albums)"><md-icon class="small material-icons">library_add</md-icon>Agregar Fotos</md-button>
 	<md-input-container>
 		<label>Tags:</label>
 	  <md-select ng-model="data.search" placeholder="Tag" class="md-no-underline">
@@ -21,16 +21,22 @@
 
 </header>
 <div>
-	Albums: <a ng-click="seleccionarAlbum(album.nombre)" ng-repeat="album in albums track by $index">{{album.nombre}}, </a>
+	Albums: 
+	<a ng-click="seleccionarAlbum('')">Sin albúm</a>
+	<a ng-click="seleccionarAlbum(album.nombre)" ng-repeat="album in albums track by $index">
+		<md-icon class="small material-icons">photo_album</md-icon>
+		{{album.nombre}}, 
+	</a>
 	<md-button ng-hide="perfil == undefined" class="md-raised md-primary" ng-click="mostrarModificarAlbums($event)"><md-icon class="small material-icons">library_add</md-icon>Crear Albúm</md-button>
 </div>
 <ul id="grid">
 	<foto class="grid-item" ng-repeat="foto in fotos | filter:data.search | orderBy:criterio"
  		foto="foto" 
  		directorio="{{directorioImgs}}"
- 		eliminar-foto="eliminarFoto(id)"
+ 		mostrar-eliminar-foto="mostrarEliminarFoto(evento,id)"
  		mostrar-cambiar-foto-perfil="mostrarCambiarFotoPerfil(evento,foto)"
  		mostrar-modificar-foto="mostrarModificarFoto(evento,foto)"
+ 		modificar-foto-album="modificarFotoAlbum(album,foto)"
  		last="$last"
  		layout-grid="layoutGrid()"
  		data-ng-click="mostrarCanvas(fotos,directorioImgs,$index)"
@@ -40,9 +46,23 @@
  		>
 	</foto>
 </ul>
-<div id="opcionesSeleccionadas">
+<div id="opcionesSeleccionadas" ng-class="fotosSeleccionadas.length >= 1 ? 'abierto' : 'cerrado' ">
 	<hr>
 	{{fotosSeleccionadas.length}}
+	<form name="form">
+		<md-input-container>
+			<label>Albúm:</label>
+		  	<md-select ng-model="album" placeholder="Album" class="md-no-underline" required>
+		    	<md-option ng-repeat="album in albums track by $index" value="{{album.nombre}}">{{album.nombre}}</md-option>
+		  	</md-select>
+		</md-input-container>
+		<md-button type="submit" class="md-raised md-primary" ng-click="agregarFotosAlbum(form.$valid,album,fotosSeleccionadas)" ng-disabled="form.$invalid"><md-icon class="small material-icons" >library_add</md-icon>Agregar Fotos a Albúm</md-button>
+	</form>
+
+	<md-button class="md-raised md-primary" ng-click="agregarTag(fotosSeleccionadas)"><md-icon class="small material-icons">library_add</md-icon>Agregar Tag</md-button>
+
+	<md-button class="md-raised md-primary" ng-click="eliminarFotos(fotosSeleccionadas)"><md-icon class="small material-icons">library_add</md-icon>Eliminar fotos</md-button>
+
 </div>
 
 <canvas id="canvas" style="" ng-keypress="down($event)" tabindex="1"></canvas>
