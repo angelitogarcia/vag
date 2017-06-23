@@ -15,12 +15,12 @@
 	$scope.directorioImgs="../../archivos/imagenes/";
 	$scope.allTags=[];
 	$scope.historial=[]
-	$scope.vistas={
-		idPerfil:"",
-		numVistas:""
-	}
-
 	perfilesHistorial=[];
+
+	// ********************************************* //
+    //	      C A R G A R   P E R F I L E S 		 //
+    // ********************************************* //
+
 	$scope.cargarPerfiles=function(){
 		$http.get('http://localhost/vag/API/controlador/verPerfiles.php').
 	    success(function(data, status, headers, config) {
@@ -37,40 +37,15 @@
 	      // log error
 	    });
 	}
-	$scope.actualizarFavoritos=function(){
-		var json = localStorage.getItem("favoritos");
-		$scope.favoritos=JSON.parse(json);
+	$scope.actualizarPerfiles=function(){
+		$scope.cargarPerfiles();
 	}
-	$scope.borrarFavoritos=function(){
-		var emptyArray=[];
-		var json=JSON.stringify(emptyArray);
-		localStorage.setItem("favoritos",json);
-		$scope.actualizarFavoritos();
-	}
-	$scope.borrarHistorial=function(){
-		var emptyArray=[];
-		var json=JSON.stringify(emptyArray);
-		localStorage.setItem("historial",json);
-		$scope.actualizarHistorial();
-	}
-	$scope.actualizarHistorial=function(){
-		if (localStorage.getItem("historial")!== null) {
-		  	var json=localStorage.getItem("historial");
-			$scope.historial=JSON.parse(json);
-			$scope.perfilesHistorial=$scope.filtrarIdsHistorial($scope.historial,$scope.perfiles);
-		}
-	}
-	$scope.filtrarIdsHistorial=function(historial,perfiles){
-		filtrados=[];
- 		$.each(perfiles,function(i,perfil){
- 			if(arrayObjectIndexOf(historial,perfil.idPerfil,"id")>=0){
- 				var indice=arrayObjectIndexOf(historial,perfil.idPerfil,"id");
- 				perfil.horaVisita=historial[indice].hora;
- 				filtrados.push(perfil);
- 			} 
- 		})
- 		return filtrados;
-	}
+	$scope.$on("actualizarPerfiles",function(event){
+    	$scope.cargarPerfiles();
+    });
+	// ********************************************* //
+    //	     			T  A  G  S 					 //
+    // ********************************************* //
 	$scope.separarTags=function(){
 		var temp=[];
 		for(var i=0;i< $scope.perfiles.length;i++){
@@ -81,21 +56,16 @@
 		    if($.inArray(el, $scope.allTags) === -1) $scope.allTags.push(el);
 		});
 	}
-	$scope.mostrarAgregarPerfil=function(ev){
-		$mdDialog.show({
-	      controller: agregarPerfilController,
-	      templateUrl: 'template/dialogo.html',
-	      parent: angular.element(document.body),
-	      targetEvent: ev,
-	      clickOutsideToClose:true,
-	      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-	    })
-	    .then(function(perfil) {
-	      console.log("nombre:" + perfil.nombre +",urlFb:"+perfil.urlFb+",tags:"+perfil.tags);
-	      $scope.agregarPerfil(perfil);
-	    }, function() {
-	      $scope.status = 'You cancelled the dialog.';
-	    });
+	$scope.modificarPerfil=function(perfil){
+		$http.get("http://localhost/vag/API/controlador/modificarPerfil.php",{params:perfil}).
+		success(function(data, status, headers, config) {
+	      	console.log(data);
+	      	$scope.cargarPerfiles();
+	      	$scope.mostrarToast("Se modifico correctamente el perfil");
+	    }).
+	    error(function(data, status, headers, config){
+	      	$scope.mostrarToast("Error al modificar: "+data);
+	    });		
 	}
 	$scope.mostrarModificarPerfil=function(ev,_perfil){
 		ev.stopPropagation() 
@@ -115,6 +85,51 @@
 	      $scope.status = 'You cancelled the dialog.';
 	    });
 	}
+	// ********************************************* //
+    //	        A G R E G A R   P E R F I L			 //
+    // ********************************************* //
+	$scope.agregarPerfil=function(perfil){
+		$http.get("http://localhost/vag/API/controlador/agregarPerfil.php",{params:perfil}).
+		success(function(data, status, headers, config) {
+	      	console.log(data);
+	      	$scope.cargarPerfiles();
+	      	$scope.mostrarToast("Se agrego correctamente el perfil");
+	    }).
+	    error(function(data, status, headers, config){
+	      	$scope.mostrarToast("Error al agregar: "+data);
+	    });
+	}
+	$scope.mostrarAgregarPerfil=function(ev){
+		$mdDialog.show({
+	      controller: agregarPerfilController,
+	      templateUrl: 'template/dialogo.html',
+	      parent: angular.element(document.body),
+	      targetEvent: ev,
+	      clickOutsideToClose:true,
+	      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+	    })
+	    .then(function(perfil) {
+	      console.log("nombre:" + perfil.nombre +",urlFb:"+perfil.urlFb+",tags:"+perfil.tags);
+	      $scope.agregarPerfil(perfil);
+	    }, function() {
+	      $scope.status = 'You cancelled the dialog.';
+	    });
+	}
+	// ********************************************* //
+    //	        E L I M I N A R   P E R F I L		 //
+    // ********************************************* //
+    $scope.eliminarPerfil=function(id){
+		$http.get("http://localhost/vag/API/controlador/eliminarPerfil.php",{params:{"idPerfil":id}}).
+		success(function(data, status, headers, config) {
+	      	console.log(data);
+	      	$scope.cargarPerfiles();
+	      	$scope.mostrarToast("Se elimino correctamente el perfil");
+	    }).
+	    error(function(data, status, headers, config){
+	      // log error
+	      $scope.mostrarToast("No se pudo eliminar el perfil");
+	    });
+	}
 	$scope.mostrarEliminarPerfil = function(ev,perfil) {
 		ev.stopPropagation();
 	    var confirm = $mdDialog.confirm()
@@ -131,40 +146,11 @@
 	      
 	    });
 	};
-	$scope.agregarPerfil=function(perfil){
-		$http.get("http://localhost/vag/API/controlador/agregarPerfil.php",{params:perfil}).
-		success(function(data, status, headers, config) {
-	      	console.log(data);
-	      	$scope.cargarPerfiles();
-	      	$scope.mostrarToast("Se agrego correctamente el perfil");
-	    }).
-	    error(function(data, status, headers, config){
-	      	$scope.mostrarToast("Error al agregar: "+data);
-	    });
-	}
-	$scope.modificarPerfil=function(perfil){
-		$http.get("http://localhost/vag/API/controlador/modificarPerfil.php",{params:perfil}).
-		success(function(data, status, headers, config) {
-	      	console.log(data);
-	      	$scope.cargarPerfiles();
-	      	$scope.mostrarToast("Se modifico correctamente el perfil");
-	    }).
-	    error(function(data, status, headers, config){
-	      	$scope.mostrarToast("Error al modificar: "+data);
-	    });		
-	}
-	$scope.eliminarPerfil=function(id){
-		$http.get("http://localhost/vag/API/controlador/eliminarPerfil.php",{params:{"idPerfil":id}}).
-		success(function(data, status, headers, config) {
-	      	console.log(data);
-	      	$scope.cargarPerfiles();
-	      	$scope.mostrarToast("Se elimino correctamente el perfil");
-	    }).
-	    error(function(data, status, headers, config){
-	      // log error
-	      $scope.mostrarToast("No se pudo eliminar el perfil");
-	    });
-	}
+	// ********************************************* //
+    //	     S E L E C C I O N A R   P E R F I L	 //
+    // ********************************************* //
+
+
 	$scope.seleccionarPerfilBusqueda=function(perfil){
 		if(perfil!=undefined)
 		{
@@ -201,6 +187,20 @@
 		myDropzone.options.url="../API/controlador/agregarLocalFotos.php?idPerfil="+id;
 	}
 
+	// ********************************************* //
+    //	     		F A V O R I T O S 				//
+    // ********************************************* //
+    $scope.actualizarFavoritos=function(){
+		var json = localStorage.getItem("favoritos");
+		$scope.favoritos=JSON.parse(json);
+	}
+	$scope.borrarFavoritos=function(){
+		var emptyArray=[];
+		var json=JSON.stringify(emptyArray);
+		localStorage.setItem("favoritos",json);
+		$scope.actualizarFavoritos();
+	}
+
 	$scope.eliminarFavorito=function(id){
 		var index=$scope.favoritos.indexOf(id);
 		$scope.favoritos.splice(index,1);
@@ -221,7 +221,36 @@
 		}
 		$scope.actualizarFavoritos();
 	}
-
+	// ********************************************* //
+    //	     		H I S T O R I A L 				 //
+    // ********************************************* //
+	$scope.borrarHistorial=function(){
+		var emptyArray=[];
+		var json=JSON.stringify(emptyArray);
+		localStorage.setItem("historial",json);
+		$scope.actualizarHistorial();
+	}
+	$scope.actualizarHistorial=function(){
+		if (localStorage.getItem("historial")!== null) {
+		  	var json=localStorage.getItem("historial");
+			$scope.historial=JSON.parse(json);
+			$scope.perfilesHistorial=$scope.filtrarIdsHistorial($scope.historial,$scope.perfiles);
+		}
+	}
+	$scope.filtrarIdsHistorial=function(historial,perfiles){
+		filtrados=[];
+ 		$.each(perfiles,function(i,perfil){
+ 			if(arrayObjectIndexOf(historial,perfil.idPerfil,"id")>=0){
+ 				var indice=arrayObjectIndexOf(historial,perfil.idPerfil,"id");
+ 				perfil.horaVisita=historial[indice].hora;
+ 				filtrados.push(perfil);
+ 			} 
+ 		})
+ 		return filtrados;
+	}
+	// ********************************************* //
+    //	  A B R I R   P A N E L   P E R F I L E S    //
+    // ********************************************* //
 	$scope.ordenarPerfiles=function(filtro){
 		$scope.perfiles = orderByFilter($scope.perfiles, filtro, true);
 
@@ -243,13 +272,7 @@
 	        .hideDelay(3000)
 	    );
 	}
-	// --------- EVENTOS ---------- //
-	$scope.actualizarPerfiles=function(){
-		$scope.cargarPerfiles();
-	}
-	$scope.$on("actualizarPerfiles",function(event){
-    	$scope.cargarPerfiles();
-    });
+
 	$scope.cargarPerfiles();
 	$scope.actualizarFavoritos();
 

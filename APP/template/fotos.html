@@ -1,7 +1,9 @@
 <header>
 	<span class="md-headline" id="perfilSeleccionado">{{perfil.nombrePerfil}}</span>
 	<span>{{perfil.numFotos}}</span>
-	<md-button ng-hide="perfil == undefined" id="btn-agregar-fotos" class="md-raised md-primary" ng-click="mostrarAgregarFotos($event,albums)"><md-icon class="small material-icons">library_add</md-icon>Agregar Fotos</md-button>
+	<!-- AGREGAR FOTOS -->
+	<md-button ng-hide="perfil == undefined" id="btn-agregar-fotos" class="md-raised md-primary" ng-click="mostrarAgregarFotos($event,albums,perfil)"><md-icon class="small material-icons">library_add</md-icon>Agregar Fotos</md-button>
+	<!-- FILTRAR POR TAGS -->
 	<md-input-container>
 		<label>Tags:</label>
 	  <md-select ng-model="data.search" placeholder="Tag" class="md-no-underline">
@@ -9,6 +11,7 @@
 	    <md-option ng-repeat="tag in allTags" value="{{tag}}">{{tag}}</md-option> 
 	  </md-select>
 	</md-input-container>
+	<!-- ORDENAR POR -->
 	<md-input-container>
 		<label>Ordenar por:</label>
 	  	<md-select ng-model="criterio" placeholder="Ordenar por" class="md-no-underline">
@@ -29,6 +32,7 @@
 	</a>
 	<md-button ng-hide="perfil == undefined" class="md-raised md-primary" ng-click="mostrarModificarAlbums($event)"><md-icon class="small material-icons">library_add</md-icon>Crear Albúm</md-button>
 </div>
+
 <ul id="grid">
 	<foto class="grid-item" ng-repeat="foto in fotos | filter:data.search | orderBy:criterio"
  		foto="foto" 
@@ -42,26 +46,32 @@
  		data-ng-click="mostrarCanvas(fotos,directorioImgs,$index)"
  		album="foto.album"
  		ng-right-click="seleccionarFoto(foto)"
- 		ng-class="{'seleccionada':foto.seleccionada}"
+ 		ng-class="{'seleccionada':foto.seleccionada,'opcionesAbiertas':foto.opciones}"
+ 		ng-mouseenter="foto.opciones=true"
+    	ng-mouseleave="foto.opciones=false"
  		>
 	</foto>
 </ul>
-<div id="opcionesSeleccionadas" ng-class="fotosSeleccionadas.length >= 1 ? 'abierto' : 'cerrado' ">
+<!--  ////////////////////////////////
+///// Opciones de seleccionadas //////
+//////////////////////////////////////
+ -->
+<div id="opcionesSeleccionadas" ng-class="fotosSeleccionadas.length >= 1 ? 'abierto' : 'cerrado' " layout="row" layout-align="start center">
 	<hr>
 	{{fotosSeleccionadas.length}}
 	<form name="form">
 		<md-input-container>
 			<label>Albúm:</label>
-		  	<md-select ng-model="album" placeholder="Album" class="md-no-underline" required>
+		  	<md-select ng-model="albumSeleccionado" placeholder="Album" class="md-no-underline" required>
 		    	<md-option ng-repeat="album in albums track by $index" value="{{album.nombre}}">{{album.nombre}}</md-option>
 		  	</md-select>
 		</md-input-container>
-		<md-button type="submit" class="md-raised md-primary" ng-click="agregarFotosAlbum(form.$valid,album,fotosSeleccionadas)" ng-disabled="form.$invalid"><md-icon class="small material-icons" >library_add</md-icon>Agregar Fotos a Albúm</md-button>
+		<md-button type="submit" class="md-raised md-primary" ng-click="agregarFotosAlbum(form.$valid,albumSeleccionado,fotosSeleccionadas)" ng-disabled="form.$invalid"><md-icon class="small material-icons" >library_add</md-icon>Agregar Fotos a Albúm</md-button>
 	</form>
 
-	<md-button class="md-raised md-primary" ng-click="agregarTag(fotosSeleccionadas)"><md-icon class="small material-icons">library_add</md-icon>Agregar Tag</md-button>
+	<md-button class="md-raised md-primary" ng-click="mostrarAgregarTagSeleccionadas($event,fotosSeleccionadas)"><md-icon class="small material-icons">library_add</md-icon>Agregar Tag</md-button>
 
-	<md-button class="md-raised md-primary" ng-click="eliminarFotos(fotosSeleccionadas)"><md-icon class="small material-icons">library_add</md-icon>Eliminar fotos</md-button>
+	<md-button class="md-raised md-primary" ng-click="mostrarEliminarFotos($event,fotosSeleccionadas)"><md-icon aria-label="android">delete</md-icon>Eliminar fotos</md-button>
 
 </div>
 

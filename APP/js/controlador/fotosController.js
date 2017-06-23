@@ -1,4 +1,4 @@
-app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
+app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast,$window){
 	$scope.idPerfil=0;
 	$scope.directorioImgs="../../archivos/imagenes/";
 	$scope.allTags=[];
@@ -11,7 +11,9 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 	}
 	$scope.fotosSeleccionadas=[];
 
-
+	$scope.getPerRow = function () {
+		return $window.innerWidth > 768 ? 5 : 3;
+	};
 
     // ********************************************* //
     //		     C A R G A R   F O T O S		 	 //
@@ -36,10 +38,9 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 	    success(function(data, status, headers, config) {
 	      	$scope.fotos = data;
 	      	$scope.separarTags();
-
 	    }).
 	    error(function(data, status, headers, config){
-	      // log error
+	      	// log error
 	    });
     };
 
@@ -52,24 +53,25 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 	      	$scope.separarTags();
 	    }).
 	    error(function(data, status, headers, config){
-	      // log error
+	      	// log error
 	    });
     }
 
     $scope.layoutGrid= function() {
-    	$("#grid").gridalicious({
+    	/*$("#grid").gridalicious({
             selector: ".grid-item",
             width: 200,
             gutter:1,
             animate:true
-        });
+        });*/
     };
 
     // ********************************************* //
     //		      A G R E G A R  F O T O S			 //
     // ********************************************* //
 
-    $scope.mostrarAgregarFotos=function(ev,albums){
+    $scope.mostrarAgregarFotos=function(ev,_albums,perfil){
+    	$scope.$parent.$broadcast("cargarAlbumsEnAgregarController",_albums,perfil);
 		$mdDialog.show({
 		      contentElement: "#dialogAgregarFotos",
 		      parent: angular.element(document.body),
@@ -78,7 +80,6 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 		      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
 		})
 	}
-
 
     // ********************************************* //
     //					A L B U M S 				 //
@@ -108,6 +109,8 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
     	$http.get('http://localhost/vag/API/controlador/modificarAlbumsPerfil.php',{params:{"idPerfil":id,"albums":json}}).
 	    success(function(data, status, headers, config) {
 	      	console.log(data);
+	      	$scope.$parent.$broadcast("actualizarPerfiles");
+
 	    }).
 	    error(function(data, status, headers, config){
 	    });
@@ -210,8 +213,26 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 	      	$scope.status = 'You cancelled the dialog.';
 	    });
     }
-
-
+    $scope.mostrarAgregarTagSeleccionadas=function(ev,_fotos)
+    {
+    	ev.stopPropagation();
+    	$mdDialog.show({
+			locals:{fotos:_fotos},
+	      	controller: agregarTagSeleccionadasController,
+	      	templateUrl: 'template/dialogoAgregarTagSeleccionadas.html',
+	      	parent: angular.element(document.body),
+	      	targetEvent: ev,
+	      	clickOutsideToClose:true,
+	      	fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+	    })
+	    .then(function(fotos) {
+	      	for(var i=0;i<fotos.length;i++){
+	      		$scope.modificarFoto(fotos[i]);
+	      	}
+	    }, function() {
+	      	$scope.status = 'You cancelled the dialog.';
+	    });
+    }
     // ********************************************* //
     //	  C A M B I A R  F O T O  D E  P E R F I L   //
     // ********************************************* //
@@ -283,7 +304,6 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 	      
 	    });
     }
-
     $scope.mostrarEliminarFoto=function(ev,id){
     	ev.stopPropagation();
 	    var confirm = $mdDialog.confirm()
@@ -296,10 +316,23 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast){
 	    $mdDialog.show(confirm).then(function(){
 	      	console.log("id:"+id);
 	      	$scope.eliminarFoto(id);
-	    },function(){
-	      
 	    });
     }
+    $scope.mostrarEliminarFotos=function(ev,fotos){
+    	ev.stopPropagation();
+	    var confirm = $mdDialog.confirm()
+	        .title('Deseas eliminar estas '+fotos.length+' fotos')
+	        .ariaLabel('Lucky day')
+	        .targetEvent(ev)
+	        .ok('Eliminar')
+	        .cancel('Cancelar');
 
+	    $mdDialog.show(confirm).then(function(){
+	    	for(var i=0;i<fotos.length;i++){
+	    		$scope.eliminarFoto(fotos[i].idFoto);
+	    	}
+	    	$scope.cargarFotos();
+	    });
+    }
     $scope.cargarFotos();
 });

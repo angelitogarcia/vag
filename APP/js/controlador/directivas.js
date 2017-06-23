@@ -42,4 +42,9 @@ app.directive('ngRightClick', function($parse) {
             });
         });
     };
-});
+})
+app.directive('layout',function(){
+	return function(scope,element,attrs){
+		
+	}
+})

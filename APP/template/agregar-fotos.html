@@ -1,23 +1,21 @@
 <div id="dialogAgregarFotos" class="md-dialog-container">
 	<md-dialog>
-		<md-toolbar>
-			<h2>Agregar Fotos</h2>
+		<md-toolbar layout="row" layout-align="start center">
+			<h2>Agregar Fotos a {{perfil.nombrePerfil}}</h2>
 			<md-input-container>
-				<label>Agregar a Albúm:</label>
-		  		<md-select ng-model="album" placeholder="Ordenar por" class="md-no-underline">
-		    	<md-option value="-resolucion" ng-click="">Mas Resolución</md-option>
-		  		</md-select>
+				<label>Albúm:</label>
+			  	<md-select ng-model="data.album" placeholder="Album" class="md-no-underline" ng-change="updateAlbum(data.album,perfil.idPerfil)" required>
+			    	<md-option ng-repeat="album in albums track by $index" value="{{album.nombre}}">{{album.nombre}}</md-option>
+			  	</md-select>
 			</md-input-container>
 		</md-toolbar>
 		<div id="dropFotos">
-
 			<div id="fotosContenedor" class="dropzone" >
 		    </div>
-
 		</div>
-		<md-dialog-actions layout="row">
-			<button id="submit-all">Subir</button>
-		    <input type="checkbox" name="auto" value="auto" id="auto"> Subida Instantanea
+		<md-dialog-actions layout="row" layout-align="start center">
+			<md-button id="submit-all" class="md-raised md-primary"><md-icon aria-label="android">add_a_photo</md-icon>Agregar Fotos</md-button>
+		    <input type="checkbox" name="auto" value="auto" id="auto">Subida Instantanea
 		    <button id="quitar">Limpiar area</button>
 		</md-dialog-actions>
 	</md-dialog>

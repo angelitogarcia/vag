@@ -18,7 +18,7 @@ function initDropzone(){
 			console.log(response);
 		}
 	 });
-	$("#submit-all").click(function (e) {
+	$("#submit-all").click(function (e) {	
 	   e.preventDefault();
 	   e.stopPropagation();
 	   

@@ -15,12 +15,20 @@ li{
 	list-style: none;
 }
 foto{
-	width: 100%;
+	width: 200px;
 	outline:none;
+	color: #fff;
+
 }
 foto.seleccionada{
 	box-sizing: border-box;
 	border: 4px solid red;
+}
+#Fotos ul li .opciones{
+	display: none;
+}
+foto.opcionesAbiertas .opciones{
+	display: block !important;
 }
 #Fotos{
  	background-color: #eee;
@@ -38,6 +46,9 @@ foto.seleccionada{
 	left: 0;
 	height: 100px;
 	transition:bottom 0.5s;
+	background-color: #fff;
+	border-top:1px solid #ddd;
+	width: 100%;
 }
 #opcionesSeleccionadas.abierto{
 	bottom: 0px;
@@ -138,7 +149,6 @@ foto.seleccionada{
 	background-color: #999;
 }
 #dialogAgregarFotos md-dialog{
-	
 	width: 95%;
 	height: 700px;
 	background: none;
@@ -185,4 +195,9 @@ foto.seleccionada{
 	top: 0px;
 	z-index: 1;
 	background-color: #5f7c8a;
+}
+.close{
+	position: absolute;
+	top: 0px;
+	right: 0px;
 }

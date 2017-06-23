@@ -10,6 +10,7 @@ $db = new dbmanager();
 
 $thumb_height=400;
 $idPerfil=$_GET['idPerfil'];
+$album=$_GET['album'];
 
 // traer el nombre del perfil
 
@@ -60,7 +61,7 @@ foreach($_FILES['file']['name'] as $index=>$name)
     {
     	if(move_uploaded_file($_FILES["file"]["tmp_name"][$index],$upload_image))
     	{
-    		$sql="INSERT INTO Foto(urlFoto,ancho,alto,proporcion,idFbFoto,extension,idPerfil,resolucion) VALUES";
+    		$sql="INSERT INTO Foto(urlFoto,ancho,alto,proporcion,idFbFoto,extension,idPerfil,resolucion,album) VALUES";
     		$indice++;
            	list($width,$height)=getimagesize($upload_image);
            	//if($indice>1){$sql.=",";};
@@ -107,11 +108,11 @@ foreach($_FILES['file']['name'] as $index=>$name)
 	                    imagejpeg($thumb_create,$thumb_dir.$filename,100);
 
 	           	}
-	           	$sql.="('$filename','$width','$height','$proporcion','','$file_ext','$idPerfil','$resolucion')";
+	           	$sql.="('$filename','$width','$height','$proporcion','','$file_ext','$idPerfil','$resolucion','$album')";
             }
             else
             {
-            	$sql.="('$filename',0,0,0,'','$file_ext','$idPerfil',0)";
+            	$sql.="('$filename',0,0,0,'','$file_ext','$idPerfil',0,'')";
             }
             
 
