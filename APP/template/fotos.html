@@ -34,7 +34,7 @@
 </div>
 
 <ul id="grid">
-	<foto class="grid-item" ng-repeat="foto in fotos | filter:data.search | orderBy:criterio"
+	<foto class="grid-item" ng-repeat="foto in fotos | filter:data.search | orderBy:criterio track by $index"
  		foto="foto" 
  		directorio="{{directorioImgs}}"
  		mostrar-eliminar-foto="mostrarEliminarFoto(evento,id)"

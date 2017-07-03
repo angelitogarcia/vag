@@ -15,12 +15,12 @@ app.directive('foto',function($timeout){
 		templateUrl: "directives/fotoDirective.html",
 		link:{ 
 			pre:function(scope, element, attr){
-				$("#grid .galcolumn").remove();
-				$(element).hide();
+				//console.log("hola");
 			},
 			post:function (scope, element, attr){
 				$(element).show();
 				scope.$watch('last',function(){
+					//console.log("last");
 					if (scope.last === true) {
 						$timeout(function () {
 							scope.layoutGrid();
@@ -48,3 +48,6 @@ app.directive('layout',function(){
 		
 	}
 })
+$('#grid').bind("DOMSubtreeModified",function(){
+  console.log('changed');
+});

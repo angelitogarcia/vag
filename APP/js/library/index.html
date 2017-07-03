@@ -1,0 +1,114 @@
+<html>
+<head>
+	<title>Grid Layout</title>
+	<!-- jquery -->
+
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+<style>
+	#contenedor{
+		width: 100%;
+		position: relative;
+		text-align: center;
+		margin: auto;
+		height: 200px;
+		padding: 0px;
+		margin: auto;
+	}
+	#contenedor li{
+		position: absolute;
+		width: 500px;
+		box-sizing: border-box;
+	    -moz-box-sizing: border-box;
+	    -webkit-box-sizing: border-box;
+	    list-style: none;
+	    margin: 0;
+	    padding: 0;
+	}
+	#contenedor li img{
+		width: 100%;
+		height: auto;
+	}
+</style>
+<script type="text/javascript" src="../utilities.js"></script>
+<script type="text/javascript">
+
+
+    $.fn.grid = function( options ){
+        var settings = $.extend({
+        	ancho:357,
+        	glutter:5
+        }, options );
+        this.each(function(){
+        	var self=$(this);
+	        var anchoContenedor=$(window).width();
+	        numColumns=Math.floor(anchoContenedor/settings.ancho);
+	        var columnas=[];
+	        for(var i=0;i<numColumns;i++){
+	        	var columna={
+	        		left:(100/numColumns)*i,
+	        		height:0
+	        	}
+	        	columnas.push(columna);
+	        }
+
+	        $(this).css({width:(settings.ancho*numColumns)});
+
+	        self.find("li").each(function(){
+	        	var item=$(this);
+	        	var minimo=Math.min.apply(Math,columnas.map(function(o){return o.height;}));
+	        	var index=arrayObjectIndexOf(columnas,minimo, "height");
+	        	item.css({width:settings.ancho+"px",left:columnas[index].left + "%",top:columnas[index].height,padding:settings.glutter});
+	        	var alto=parseInt(item.attr("alto"));
+	        	var ancho=parseInt(item.attr("ancho"));
+	        	var newAlto=(settings.ancho/ancho)*alto;
+	        	columnas[index].height+=newAlto+settings.glutter;
+	        	item.find("img").on('load', function(){
+				  // hide/remove the loading image
+				  	console.log("imagen cargada");
+				 	item.fadeIn("slow");
+				});
+
+	        })
+
+        })
+
+ 		
+    };
+
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	$("#contenedor").grid({ancho:300});
+
+})
+function actualizar(_ancho){
+	var ancho=_ancho;
+
+		$("#contenedor").grid({ancho:ancho});
+
+}
+</script>
+</head>
+
+<body>
+	<a href="#" onclick="actualizar(100)" id="actualizar">100 </a>
+	<a href="#" onclick="actualizar(200)" id="actualizar">200</a>
+	<a href="#" onclick="actualizar(300)" id="actualizar">300</a>
+	<a href="#" onclick="actualizar(400)" id="actualizar">400</a>
+	<a href="#" onclick="actualizar(500)" id="actualizar">500</a>
+	<ul id="contenedor">
+		<li ancho="1024" alto="667"><img src="http://www.vahistorical.org/sites/default/files/styles/fullscreen_gallery_image/public/slideshow_image/VirginiaScene.1996.28.6_small.jpg?itok=mBMx6RxN"></li>
+		<li ancho="481" alto="640"><img src="https://s-media-cache-ak0.pinimg.com/736x/08/63/e2/0863e2f16bb22ba30a13a4b3835de90c.jpg"></li>
+		<li ancho="600" alto="740"><img src="http://www.anasaugar.com/wp-content/uploads/2011/10/gal3.jpg"></li>
+		<li ancho="600" alto="465"><img src="http://www.good-cook.ru/i/thbn/1/2/12f6707e50a4d3f0d5f4add564a4d5b8.jpg"></li>
+		<li ancho="583" alto="699"><img src="http://www.blogodisea.com/wp-content/uploads/2010/06/Leonid-afremov-9.jpg?w=240"></li>
+		<li ancho="450" alto="345"><img src="http://4.bp.blogspot.com/_yzlRjthkBHU/TM1d9t5nCGI/AAAAAAAAGm8/PXWHLfz3vsI/s1600/van+gogh.jpg"></li>
+		<li ancho="560" alto="560"><img src="https://roc21cdn-roc21.netdna-ssl.com/blog/wp-content/uploads/2012/06/Alice-x-zhang-digital-painting-6_phixr.jpg"></li>
+		<li ancho="900" alto="1125"><img src="http://baqueton.com/wp-content/uploads/2016/03/Pinturas-pintadas-con-los-dedos-Arte-Impresionista-Baquet%C3%B3n-014.jpg"></li>
+	</ul>
+</body>
+</html>	
