@@ -18,7 +18,16 @@ app.controller("FotosCtrl", function($scope, $http,$mdDialog,$mdToast,$window){
     // ********************************************* //
     //		     C A R G A R   F O T O S		 	 //
     // ********************************************* //
-
+    $scope.checkText=function(text){
+    	if(text!=undefined)
+    	{
+	    	if(text.length>0){
+	    		return false;
+	    	}else{
+	    		return true;
+	    	}
+    	}	
+    }
     $scope.$on("actualizarIdPerfil",function(event,data){
     	$scope.perfil=data;
     	$scope.fotosPerfil(data);

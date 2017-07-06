@@ -1,6 +1,16 @@
 <header>
+	<!-- INFO DEL PERFIL -->
 	<span class="md-headline" id="perfilSeleccionado">{{perfil.nombrePerfil}}</span>
 	<span>{{perfil.numFotos}}</span>
+	<md-button class="md-icon-button" ng-hide="perfil==undefined" ng-disabled="checkText(perfil.urlFb)" href="{{perfil.urlFb}}" aria-label="facebook">
+	 	<md-icon>
+        <i class="icon ion-social-facebook"></i>
+        </md-icon>
+    </md-button>
+    <md-button class="md-icon-button" ng-hide="perfil==undefined" ng-disabled="false" href="{{perfil.insta}}" aria-label="instagram">
+	 	<md-icon class="icon ion-social-instagram">
+        </md-icon>
+    </md-button>
 	<!-- AGREGAR FOTOS -->
 	<md-button ng-hide="perfil == undefined" id="btn-agregar-fotos" class="md-raised md-primary" ng-click="mostrarAgregarFotos($event,albums,perfil)"><md-icon class="small material-icons">library_add</md-icon>Agregar Fotos</md-button>
 	<!-- FILTRAR POR TAGS -->

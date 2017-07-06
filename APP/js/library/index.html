@@ -66,11 +66,7 @@
 	        	var newAlto=(settings.ancho/ancho)*alto;
 	        	columnas[index].height+=newAlto+settings.glutter;
 	        	item.find("img").on('load', function(){
-				  // hide/remove the loading image
-				  	console.log("imagen cargada");
-				 	item.fadeIn("slow");
 				});
-
 	        })
 
         })
@@ -87,9 +83,7 @@ $(document).ready(function(){
 })
 function actualizar(_ancho){
 	var ancho=_ancho;
-
-		$("#contenedor").grid({ancho:ancho});
-
+	$("#contenedor").grid({ancho:ancho});
 }
 </script>
 </head>

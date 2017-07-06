@@ -107,7 +107,7 @@ function initCanvasViewer(fotos,id,directorio){
       }
 
       var handleScroll = function(evt){
-          var delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0;
+          var delta = evt.wheelDelta ? evt.wheelDelta/80 : evt.detail ? -evt.detail : 0;
           if (delta) zoom(delta);
           return evt.preventDefault() && false;
       };
